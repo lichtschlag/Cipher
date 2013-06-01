@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+
+// ===============================================================================================================
 @interface CipherFirstViewController : UIViewController
+// ===============================================================================================================
+
+- (IBAction) userDidLongPress:(UIGestureRecognizer *)sender;
+
 
 @end

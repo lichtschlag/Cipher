@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import "CipherAppDelegate.h"
+
 
 int main(int argc, char *argv[])
 {
-	@autoreleasepool {
+	@autoreleasepool
+	{
 	    return UIApplicationMain(argc, argv, nil, NSStringFromClass([CipherAppDelegate class]));
 	}
 }
+

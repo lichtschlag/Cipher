@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+
+// ===============================================================================================================
 @interface CipherAppDelegate : UIResponder <UIApplicationDelegate>
+// ===============================================================================================================
 
 @property (strong, nonatomic) UIWindow *window;
 
+
 @end
+
