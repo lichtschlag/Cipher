@@ -25,6 +25,8 @@
 		3F310BDF175A9E480093AF99 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BDE175A9E480093AF99 /* second@2x.png */; };
 		3F310BE7175A9FEA0093AF99 /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BE6175A9FEA0093AF99 /* iPhone.storyboard */; };
 		3F310BE9175AAD9C0093AF99 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F310BE8175AAD9C0093AF99 /* QuartzCore.framework */; };
+		3F310BEB175AB4DE0093AF99 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F310BEA175AB4DE0093AF99 /* CoreText.framework */; };
+		3F310BEE175AB75B0093AF99 /* CipherLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BED175AB75B0093AF99 /* CipherLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +54,9 @@
 		3F310BDE175A9E480093AF99 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		3F310BE6175A9FEA0093AF99 /* iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = iPhone.storyboard; path = en.lproj/iPhone.storyboard; sourceTree = "<group>"; };
 		3F310BE8175AAD9C0093AF99 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		3F310BEA175AB4DE0093AF99 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		3F310BEC175AB75B0093AF99 /* CipherLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherLayer.h; sourceTree = "<group>"; };
+		3F310BED175AB75B0093AF99 /* CipherLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F310BEB175AB4DE0093AF99 /* CoreText.framework in Frameworks */,
 				3F310BE9175AAD9C0093AF99 /* QuartzCore.framework in Frameworks */,
 				3F310BB8175A9E480093AF99 /* UIKit.framework in Frameworks */,
 				3F310BBA175A9E480093AF99 /* Foundation.framework in Frameworks */,
@@ -91,6 +97,7 @@
 		3F310BB6175A9E480093AF99 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3F310BEA175AB4DE0093AF99 /* CoreText.framework */,
 				3F310BE8175AAD9C0093AF99 /* QuartzCore.framework */,
 				3F310BB7175A9E480093AF99 /* UIKit.framework */,
 				3F310BB9175A9E480093AF99 /* Foundation.framework */,
@@ -137,6 +144,8 @@
 				3F310BD3175A9E480093AF99 /* CipherFirstViewController.m */,
 				3F310BD9175A9E480093AF99 /* CipherSecondViewController.h */,
 				3F310BDA175A9E480093AF99 /* CipherSecondViewController.m */,
+				3F310BEC175AB75B0093AF99 /* CipherLayer.h */,
+				3F310BED175AB75B0093AF99 /* CipherLayer.m */,
 			);
 			name = "Main View";
 			path = Cipher;
@@ -218,6 +227,7 @@
 				3F310BC8175A9E480093AF99 /* CipherAppDelegate.m in Sources */,
 				3F310BD4175A9E480093AF99 /* CipherFirstViewController.m in Sources */,
 				3F310BDB175A9E480093AF99 /* CipherSecondViewController.m in Sources */,
+				3F310BEE175AB75B0093AF99 /* CipherLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

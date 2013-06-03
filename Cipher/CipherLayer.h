@@ -1,22 +1,21 @@
 //
-//  CipherFirstViewController.h
+//  CipherLayer.h
 //  Cipher
 //
-//  Created by Leonhard Lichtschlag on 1/Jun/13.
+//  Created by Leonhard Lichtschlag on 2/Jun/13.
 //  Copyright (c) 2013 Leonhard Lichtschlag. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 
 // ===============================================================================================================
-@interface CipherFirstViewController : UIViewController
+@interface CipherLayer : CAShapeLayer
 // ===============================================================================================================
 
-@property (strong) NSString *fontName;
-@property NSUInteger fontSize;
-
-- (IBAction) userDidLongPress:(UIGestureRecognizer *)sender;
+@property (strong) UIBezierPath *clearTextPath;
+@property (strong) UIBezierPath *cipherTextPath;
+@property (nonatomic) CGFloat degreeOfCipher;
 
 
 @end
