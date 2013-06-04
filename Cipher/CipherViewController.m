@@ -47,9 +47,13 @@ static const CGFloat kMaxRevealDistance	=  100;
     [super viewDidLoad];
 	
 	self.touchlayers = [NSMutableArray new];
-	self.fontName = @"Helvetica-Bold";
-	self.fontSize = 50.0f;
+//	self.fontName = @"Helvetica-Bold";
+//	self.fontSize = 50.0f;
 	
+	// a page has a white background
+	self.view.backgroundColor = [UIColor whiteColor];
+	
+	// setup the text as layers
 	[self setupTextContainer];
 }
 
@@ -94,7 +98,6 @@ static const CGFloat kMaxRevealDistance	=  100;
 	// Use the returned character count (to the break) to create the line.
 	CFIndex count = CTTypesetterSuggestLineBreak(typesetter, start, self.textContainer.bounds.size.width);
 	CTLineRef aLine = CTTypesetterCreateLine(typesetter, CFRangeMake(start, count));
-//	CTLineRef line = aLine;
 	start += count;
 
 	UIGraphicsBeginImageContextWithOptions(self.textContainer.bounds.size, YES, 0);
@@ -210,7 +213,7 @@ static const CGFloat kMaxRevealDistance	=  100;
 		
 //		NSLog(@"%s %f", __PRETTY_FUNCTION__, CTFontGetLeading(font));
 	}
-	CFRelease(font);
+//	CFRelease(font);
 	CFRelease(typesetter);
 	CFRelease(aLine);
 }
@@ -319,7 +322,29 @@ void CGPathMorphToCircles(void *info, const CGPathElement *element)
 #pragma mark User Interaction
 // ---------------------------------------------------------------------------------------------------------------
 
-- (IBAction) userDidLongPress:(UIGestureRecognizer *)sender
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[self decipherLayersWithTouches:touches];
+}
+
+- (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[self decipherLayersWithTouches:touches];
+}
+
+- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[self decipherLayersWithTouches:nil];
+}
+
+- (void) touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[self decipherLayersWithTouches:nil];
+}
+
+
+
+- (void) decipherLayersWithTouches:(NSSet *)touches
 {
 	// remove all old touch layers
 	for (CALayer *aLayer in self.touchlayers)
@@ -328,16 +353,17 @@ void CGPathMorphToCircles(void *info, const CGPathElement *element)
 	}
 	[self.touchlayers removeAllObjects];
 	
-	if (sender.state == UIGestureRecognizerStateEnded ||
-		sender.state == UIGestureRecognizerStateCancelled ||
-		sender.state == UIGestureRecognizerStateFailed )
-		return;
+//	if (sender.state == UIGestureRecognizerStateEnded ||
+//		sender.state == UIGestureRecognizerStateCancelled ||
+//		sender.state == UIGestureRecognizerStateFailed )
+//		return;
 	
 	// create new layers for the touches
-	NSUInteger numberOfTouches = [sender numberOfTouches];
-	for (int i = 0 ; i < numberOfTouches; i++)
+//	NSUInteger numberOfTouches = [touches count];
+
+	for (UITouch *aTouch in touches)
 	{
-		CGPoint aTouchLocation = [sender locationOfTouch:i inView:self.view];
+		CGPoint aTouchLocation = [aTouch locationInView:self.view];
 		
 		CALayer *aLayer = [CALayer new];
 		aLayer.position = aTouchLocation;
@@ -351,14 +377,17 @@ void CGPathMorphToCircles(void *info, const CGPathElement *element)
 		aLayer.shadowOffset = CGSizeMake(0, 0);
 		
 		[self.touchlayers addObject:aLayer];
-//		[self.view.layer addSublayer:aLayer];
+		[self.view.layer addSublayer:aLayer];
 	}
 	
 	
+	
+	
 	// iterate over all touches
-	for (int i = 0 ; i < numberOfTouches; i++)
+	for (UITouch *aTouch in touches)
 	{
-		CGPoint aTouchLocation = [sender locationOfTouch:i inView:self.view];
+		CGPoint aTouchLocation = [aTouch locationInView:self.view];
+		
 		aTouchLocation = [self.view.layer convertPoint:aTouchLocation toLayer:self.textContainer];
 		
 		for (CipherLayer *aGlyphLayer in self.textContainer.sublayers)

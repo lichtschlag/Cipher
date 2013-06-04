@@ -30,7 +30,7 @@ NSString *const kMorphAnimationKey      = @"kMorphAnimationKey";
     self = [super init];
     if (self)
 	{
-        _degreeOfCipher = 0;
+        _degreeOfCipher = 1;
 		
 		self.prototypeAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
 		self.prototypeAnimation.duration = 1.01;
