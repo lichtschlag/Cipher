@@ -10,7 +10,7 @@
 
 
 // ===============================================================================================================
-@interface CipherFirstViewController : UIViewController
+@interface CipherViewController : UIViewController
 // ===============================================================================================================
 
 @property (strong) NSString *fontName;

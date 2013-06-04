@@ -9,6 +9,16 @@
 #import "CipherLayer.h"
 
 
+// =================================================================================================================
+@interface CipherLayer()
+// =================================================================================================================
+
+@property (strong) CABasicAnimation *prototypeAnimation;
+
+@end
+
+
+
 // ===============================================================================================================
 @implementation CipherLayer
 // ===============================================================================================================
@@ -21,32 +31,64 @@ NSString *const kMorphAnimationKey      = @"kMorphAnimationKey";
     if (self)
 	{
         _degreeOfCipher = 0;
+		
+		self.prototypeAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
+		self.prototypeAnimation.duration = 1.01;
+		self.prototypeAnimation.speed = 0;
+		self.prototypeAnimation.timeOffset = _degreeOfCipher;
     }
     return self;
+}
+
+- (void) prep;
+{
+	self.prototypeAnimation.fromValue = (id)(self.clearTextPath.CGPath);
+	self.prototypeAnimation.toValue = (id)(self.cipherTextPath.CGPath);
+
+	self.backgroundColor = [UIColor whiteColor].CGColor;
+	self.opaque = YES;
+	self.drawsAsynchronously = YES;
 }
 
 
 - (void) setDegreeOfCipher:(CGFloat)degreeOfCipher
 {
-	_degreeOfCipher = degreeOfCipher;
-
-	[self setUpAnimation];
-}
-
-
-- (void) setUpAnimation
-{
-	[self removeAnimationForKey:kMorphAnimationKey];
+	if (_degreeOfCipher == degreeOfCipher)
+		return;
 	
-	CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"path"];
-	animation.duration = 1.01;
-	animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-	animation.speed = 0;
-	animation.timeOffset = _degreeOfCipher;
-	animation.fromValue = (id)self.clearTextPath.CGPath;
-	animation.toValue = (id)self.cipherTextPath.CGPath;
-	[self addAnimation:animation forKey:kMorphAnimationKey];
+	_degreeOfCipher = degreeOfCipher;
+	
+	[self removeAnimationForKey:kMorphAnimationKey];
+
+	if (degreeOfCipher == 1.0)
+	{
+		self.path = self.cipherTextPath.CGPath;
+//		[CATransaction begin];
+//		[CATransaction setDisableActions: YES];
+//		self.hidden = YES;
+//		[CATransaction commit];
+	}
+	else if (degreeOfCipher == 0.0)
+	{
+		self.path = self.clearTextPath.CGPath;
+//		[CATransaction begin];
+//		[CATransaction setDisableActions: YES];
+//		self.hidden = YES;
+//		[CATransaction commit];
+	}
+	else
+	{
+//		[CATransaction begin];
+//		[CATransaction setDisableActions: YES];
+//		self.hidden = NO;
+//		[CATransaction commit];
+		//	A copy from the prototype speeds up the setup of the animation by -20%
+		CABasicAnimation *animation = [self.prototypeAnimation copy];
+		animation.timeOffset = _degreeOfCipher;
+		[self addAnimation:animation forKey:kMorphAnimationKey];
+	}
 }
+
 
 
 @end

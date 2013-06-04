@@ -17,7 +17,7 @@
 		3F310BCC175A9E480093AF99 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BCB175A9E480093AF99 /* Default@2x.png */; };
 		3F310BCE175A9E480093AF99 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BCD175A9E480093AF99 /* Default-568h@2x.png */; };
 		3F310BD1175A9E480093AF99 /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BCF175A9E480093AF99 /* iPad.storyboard */; };
-		3F310BD4175A9E480093AF99 /* CipherFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BD3175A9E480093AF99 /* CipherFirstViewController.m */; };
+		3F310BD4175A9E480093AF99 /* CipherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BD3175A9E480093AF99 /* CipherViewController.m */; };
 		3F310BD6175A9E480093AF99 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BD5175A9E480093AF99 /* first.png */; };
 		3F310BD8175A9E480093AF99 /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BD7175A9E480093AF99 /* first@2x.png */; };
 		3F310BDB175A9E480093AF99 /* CipherSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BDA175A9E480093AF99 /* CipherSecondViewController.m */; };
@@ -27,6 +27,7 @@
 		3F310BE9175AAD9C0093AF99 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F310BE8175AAD9C0093AF99 /* QuartzCore.framework */; };
 		3F310BEB175AB4DE0093AF99 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F310BEA175AB4DE0093AF99 /* CoreText.framework */; };
 		3F310BEE175AB75B0093AF99 /* CipherLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BED175AB75B0093AF99 /* CipherLayer.m */; };
+		3F310BF2175E47E30093AF99 /* UIBezierPath+PathMorphing.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,8 +45,8 @@
 		3F310BCB175A9E480093AF99 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		3F310BCD175A9E480093AF99 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		3F310BD0175A9E480093AF99 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/iPad.storyboard; sourceTree = "<group>"; };
-		3F310BD2175A9E480093AF99 /* CipherFirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CipherFirstViewController.h; sourceTree = "<group>"; };
-		3F310BD3175A9E480093AF99 /* CipherFirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CipherFirstViewController.m; sourceTree = "<group>"; };
+		3F310BD2175A9E480093AF99 /* CipherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CipherViewController.h; sourceTree = "<group>"; };
+		3F310BD3175A9E480093AF99 /* CipherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CipherViewController.m; sourceTree = "<group>"; };
 		3F310BD5175A9E480093AF99 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
 		3F310BD7175A9E480093AF99 /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
 		3F310BD9175A9E480093AF99 /* CipherSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CipherSecondViewController.h; sourceTree = "<group>"; };
@@ -57,6 +58,8 @@
 		3F310BEA175AB4DE0093AF99 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		3F310BEC175AB75B0093AF99 /* CipherLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherLayer.h; sourceTree = "<group>"; };
 		3F310BED175AB75B0093AF99 /* CipherLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherLayer.m; sourceTree = "<group>"; };
+		3F310BF0175E47E30093AF99 /* UIBezierPath+PathMorphing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+PathMorphing.h"; sourceTree = "<group>"; };
+		3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+PathMorphing.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +83,7 @@
 			children = (
 				3F310BBD175A9E480093AF99 /* App Core */,
 				3F310BE5175A9EC50093AF99 /* Main View */,
+				3F310BEF175E47B30093AF99 /* UIBezierPath Categories */,
 				3F310BBE175A9E480093AF99 /* Resources */,
 				3F310BB6175A9E480093AF99 /* Frameworks */,
 				3F310BB5175A9E480093AF99 /* Products */,
@@ -140,14 +144,24 @@
 		3F310BE5175A9EC50093AF99 /* Main View */ = {
 			isa = PBXGroup;
 			children = (
-				3F310BD2175A9E480093AF99 /* CipherFirstViewController.h */,
-				3F310BD3175A9E480093AF99 /* CipherFirstViewController.m */,
+				3F310BD2175A9E480093AF99 /* CipherViewController.h */,
+				3F310BD3175A9E480093AF99 /* CipherViewController.m */,
 				3F310BD9175A9E480093AF99 /* CipherSecondViewController.h */,
 				3F310BDA175A9E480093AF99 /* CipherSecondViewController.m */,
 				3F310BEC175AB75B0093AF99 /* CipherLayer.h */,
 				3F310BED175AB75B0093AF99 /* CipherLayer.m */,
 			);
 			name = "Main View";
+			path = Cipher;
+			sourceTree = "<group>";
+		};
+		3F310BEF175E47B30093AF99 /* UIBezierPath Categories */ = {
+			isa = PBXGroup;
+			children = (
+				3F310BF0175E47E30093AF99 /* UIBezierPath+PathMorphing.h */,
+				3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */,
+			);
+			name = "UIBezierPath Categories";
 			path = Cipher;
 			sourceTree = "<group>";
 		};
@@ -225,9 +239,10 @@
 			files = (
 				3F310BC4175A9E480093AF99 /* main.m in Sources */,
 				3F310BC8175A9E480093AF99 /* CipherAppDelegate.m in Sources */,
-				3F310BD4175A9E480093AF99 /* CipherFirstViewController.m in Sources */,
+				3F310BD4175A9E480093AF99 /* CipherViewController.m in Sources */,
 				3F310BDB175A9E480093AF99 /* CipherSecondViewController.m in Sources */,
 				3F310BEE175AB75B0093AF99 /* CipherLayer.m in Sources */,
+				3F310BF2175E47E30093AF99 /* UIBezierPath+PathMorphing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,14 +6,14 @@
 //  Copyright (c) 2013 Leonhard Lichtschlag. All rights reserved.
 //
 
-#import "CipherFirstViewController.h"
+#import "CipherViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import <CoreText/CoreText.h>
 #import "CipherLayer.h"
 
 
 // ===============================================================================================================
-@interface CipherFirstViewController ()
+@interface CipherViewController ()
 // ===============================================================================================================
 
 @property (strong) NSMutableArray	*touchlayers;
@@ -23,7 +23,7 @@
 
 
 // ===============================================================================================================
-@implementation CipherFirstViewController
+@implementation CipherViewController
 // ===============================================================================================================
 
 static NSUInteger currentNumberOfElements	= 0;
@@ -33,8 +33,8 @@ static CGRect     currentGlyphBox;
 
 static const CGFloat kMarginWidth		=	80;
 static const CGFloat kMarginHeight		=	40;
-static const CGFloat kMinRevealDistance	=  300;
-static const CGFloat kMaxRevealDistance	=	50;
+static const CGFloat kMinRevealDistance	=  200;
+static const CGFloat kMaxRevealDistance	=  100;
 
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ static const CGFloat kMaxRevealDistance	=	50;
 	
 	self.touchlayers = [NSMutableArray new];
 	self.fontName = @"Helvetica-Bold";
-	self.fontSize = 62.0f;
+	self.fontSize = 50.0f;
 	
 	[self setupTextContainer];
 }
@@ -62,12 +62,13 @@ static const CGFloat kMaxRevealDistance	=	50;
     self.textContainer.frame = CGRectMake(kMarginWidth, kMarginHeight,
 										  CGRectGetWidth(self.view.layer.bounds) - 2*kMarginWidth,
 										  CGRectGetHeight(self.view.layer.bounds) - 2*kMarginHeight - tabBarHeight);
-	self.textContainer.backgroundColor = [UIColor colorWithWhite:0.667 alpha:0.20].CGColor;
+	self.textContainer.backgroundColor = [UIColor whiteColor].CGColor;
+
     [self.view.layer addSublayer:self.textContainer];
 	
 	
 	self.textContainer.geometryFlipped = YES;
-
+	self.textContainer.opaque = YES;
 	
 	// "Chalkduster"
 	// "Copperplate"
@@ -79,7 +80,7 @@ static const CGFloat kMaxRevealDistance	=	50;
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
                            (id)CFBridgingRelease(font), kCTFontAttributeName,
                            nil];
-    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:@"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:@"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                                                                      attributes:attrs];
 
     // layout text in the frame of our text container
@@ -98,26 +99,14 @@ static const CGFloat kMaxRevealDistance	=	50;
 
 	UIGraphicsBeginImageContextWithOptions(self.textContainer.bounds.size, YES, 0);
 	
-	CGRect lineBounds = CTLineGetImageBounds(aLine, UIGraphicsGetCurrentContext());
-	CGFloat ascent;
 	CGFloat descent;
-	CGFloat leading;
-	double lineWidth = CTLineGetTypographicBounds(aLine, &ascent, &descent, &leading);
-
-	CGFloat yPos = self.textContainer.bounds.size.height - self.fontSize;
+	CTLineGetTypographicBounds(aLine, NULL, &descent, NULL);
+	CGFloat lineY = self.textContainer.bounds.size.height - self.fontSize + descent;
 	
 	while (CTLineGetStringRange(aLine).length != 0)
 	{
-		// DO SOMETHING WITH THE LINE
-		lineBounds = CTLineGetImageBounds(aLine, UIGraphicsGetCurrentContext());
-		NSLog(@"rect = %@", NSStringFromCGRect(lineBounds));
-		
-		lineWidth = CTLineGetTypographicBounds(aLine, &ascent, &descent, &leading);
-
-		NSLog(@"ascent = %f, descent = %f, leading = %f, width = %f,", ascent, descent, leading, lineWidth);
-
-		
-		// -----------------------------------------------------------------------------------------------------------------
+		//					DO SOMETHING WITH THE LINE
+		// ------------------------------------------------------------------------------------------------------------
 		
 		CFArrayRef runArray = CTLineGetGlyphRuns(aLine);
 
@@ -125,11 +114,11 @@ static const CGFloat kMaxRevealDistance	=	50;
 		for (CFIndex runIndex = 0; runIndex < CFArrayGetCount(runArray); runIndex++)
 		{
 			// Get FONT for this run
-			CTRunRef run = (CTRunRef)CFArrayGetValueAtIndex(runArray, runIndex);
-			CTFontRef runFont = CFDictionaryGetValue(CTRunGetAttributes(run), kCTFontAttributeName);
+			CTRunRef aRun = (CTRunRef)CFArrayGetValueAtIndex(runArray, runIndex);
+			CTFontRef runFont = CFDictionaryGetValue(CTRunGetAttributes(aRun), kCTFontAttributeName);
 			
 			// for each GLYPH in run
-			for (CFIndex runGlyphIndex = 0; runGlyphIndex < CTRunGetGlyphCount(run); runGlyphIndex++)
+			for (CFIndex runGlyphIndex = 0; runGlyphIndex < CTRunGetGlyphCount(aRun); runGlyphIndex++)
 			{
 				// DO SOMETHING WITH THE GLYPH
 				
@@ -141,9 +130,9 @@ static const CGFloat kMaxRevealDistance	=	50;
 				// get Glyph & Glyph-data
 				CFRange thisGlyphRange = CFRangeMake(runGlyphIndex, 1);
 				CGGlyph glyph;
-				CGPoint position;
-				CTRunGetGlyphs(run, thisGlyphRange, &glyph);
-				CTRunGetPositions(run, thisGlyphRange, &position);
+				CGPoint glyphPosition;
+				CTRunGetGlyphs(aRun, thisGlyphRange, &glyph);
+				CTRunGetPositions(aRun, thisGlyphRange, &glyphPosition);
 				
 				// Get normal PATH of the letters
 				CGPathRef letterOutlinePath = CTFontCreatePathForGlyph(runFont, glyph, NULL);
@@ -161,7 +150,7 @@ static const CGFloat kMaxRevealDistance	=	50;
 				numberOfElementsInPath = 0;
 				CGPathApply(straightLetter, (void *)&numberOfElementsInPath, CGPathElementsCount);
 				
-				NSLog(@"%s %@", __PRETTY_FUNCTION__,(NSString *) NSStringFromCGRect(currentGlyphBox));
+//				NSLog(@"%s %@", __PRETTY_FUNCTION__,(NSString *) NSStringFromCGRect(currentGlyphBox));
 
 				CGPathAddPath(straightLettersPath, NULL, straightLetter);
 				
@@ -183,213 +172,48 @@ static const CGFloat kMaxRevealDistance	=	50;
 				CGPathRelease(straightLettersPath);
 
 				
-				// create visuals for this
+				// create visuals for this glyph
 				
-				CipherLayer *lineLayer = [CipherLayer layer];
-				lineLayer.clearTextPath = clearTextPath;
-				lineLayer.cipherTextPath = cipherTextPath;
-				lineLayer.path = clearTextPath.CGPath;
+				CipherLayer *glyphLayer = [CipherLayer layer];
+				glyphLayer.clearTextPath = clearTextPath;
+				glyphLayer.cipherTextPath = cipherTextPath;
+				[glyphLayer prep];
+				glyphLayer.path = cipherTextPath.CGPath;
 				
-				lineLayer.anchorPoint = CGPointMake(0,0);
+				glyphLayer.anchorPoint = CGPointMake(0,0);
 				
-				lineLayer.frame = currentGlyphBox;
-				lineLayer.bounds = currentGlyphBox;
-				//		lineLayer.bounds = CGRectMake(0, 0, lineBounds.size.width, lineBounds.size.height);
-//				lineLayer.position = CGPointMake(position.x, yPos - ascent + position.y);
-//				lineLayer.position = CGPointMake(lineLayer.position.x, -lineLayer.position.y);
-				lineLayer.position = CGPointMake(lineLayer.position.x +position.x, lineLayer.position.y+yPos+position.y);
-				lineLayer.backgroundColor = [UIColor colorWithRed:0.000 green:0.502 blue:0.251 alpha:0.4].CGColor;
+				glyphLayer.frame = currentGlyphBox;
+				glyphLayer.bounds = currentGlyphBox;
+				glyphLayer.position = CGPointMake(glyphLayer.position.x +glyphPosition.x, glyphLayer.position.y + glyphPosition.y +lineY);
+//				glyphLayer.backgroundColor = [[UIColor colorWithRed:1.000 green:1.000 blue:0.000 alpha:1.00] CGColor];
 				
+//				glyphLayer.fillColor = [[UIColor colorWithRed:0.854 green:0.272 blue:0.071 alpha:1.000] CGColor];
+				glyphLayer.fillColor = nil;
 				
-				lineLayer.backgroundColor = [[UIColor colorWithRed:1.000 green:1.000 blue:0.000 alpha:1.00] CGColor];
+				glyphLayer.strokeColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
+				glyphLayer.lineWidth = 1.0f;
+//				glyphLayer.lineJoin = kCALineJoinBevel;
 				
-				lineLayer.geometryFlipped = NO;
-				lineLayer.fillColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
-				
-				//		lineLayer.strokeColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
-				//		lineLayer.lineWidth = 3.0f;
-				//		lineLayer.lineJoin = kCALineJoinBevel;
-				
-				
-				
-				
-				
-				[self.textContainer addSublayer:lineLayer];
+				[self.textContainer addSublayer:glyphLayer];
 			}
 		}
 		
-		
-
-		
 		// -----------------------------------------------------------------------------------------------------------------
-		
-		
-		
-		
-		
-
 		
 		// get metrics for the next line
 		count = CTTypesetterSuggestLineBreak(typesetter, start, self.textContainer.bounds.size.width);
+		CFRelease(aLine);
 		aLine = CTTypesetterCreateLine(typesetter, CFRangeMake(start, count));
 		start += count;
-		lineWidth = CTLineGetTypographicBounds(aLine, &ascent, &descent, &leading);
 
-//		yPos = yPos + lineBounds.size.height + lineBounds.origin.y;
-		yPos = yPos - self.fontSize - 12;
+		lineY = lineY - self.fontSize - 2;
 		
 //		NSLog(@"%s %f", __PRETTY_FUNCTION__, CTFontGetLeading(font));
-//		CFRelease(font);
-
-	
-	
-//		textPosition.y -= ceilf(descent + leading + 1)
 	}
-
-	
-	
-	
-	
-//	CFRelease(line);
-    
-//    UIBezierPath *clearTextPath = [UIBezierPath bezierPath];
-//    [clearTextPath moveToPoint:CGPointZero];
-//    [clearTextPath appendPath:[UIBezierPath bezierPathWithCGPath:lettersOutlinePath]];
-//	
-//	UIBezierPath *cipherTextPath = [UIBezierPath bezierPath];
-//    [cipherTextPath moveToPoint:CGPointZero];
-//    [cipherTextPath appendPath:[UIBezierPath bezierPathWithCGPath:straightLettersPath]];
-//	
-//    CGPathRelease(lettersOutlinePath);
-//    CFRelease(font);
-//    
-//	
-//	// for now just setup one layer
-//    CipherLayer *lineLayer = [CipherLayer layer];
-//    lineLayer.frame = self.textContainer.bounds;
-//	lineLayer.bounds = CGPathGetBoundingBox(clearTextPath.CGPath);
-//	lineLayer.backgroundColor = [[UIColor yellowColor] CGColor];
-//    lineLayer.geometryFlipped = YES;
-//    lineLayer.path = cipherTextPath.CGPath;
-//	lineLayer.clearTextPath = clearTextPath;
-//	lineLayer.cipherTextPath = cipherTextPath;
-////    lineLayer.strokeColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
-//	lineLayer.fillColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
-//    lineLayer.lineWidth = 3.0f;
-//    lineLayer.lineJoin = kCALineJoinBevel;
-//    
-//    [self.textContainer addSublayer:lineLayer];
-	
-	UIGraphicsEndImageContext();
+	CFRelease(font);
+	CFRelease(typesetter);
+	CFRelease(aLine);
 }
-
-
-//
-//- (void) setupTextContainer2
-//{
-//	// create a nice text container with a wide side margin
-//	self.textContainer = [CALayer layer];
-//	CGFloat tabBarHeight = self.tabBarController.tabBar.frame.size.height;
-//    self.textContainer.frame = CGRectMake(kMarginWidth, kMarginHeight,
-//										  CGRectGetWidth(self.view.layer.bounds) - 2*kMarginWidth,
-//										  CGRectGetHeight(self.view.layer.bounds) - 2*kMarginHeight - tabBarHeight);
-//	self.textContainer.backgroundColor = [UIColor lightGrayColor].CGColor;
-//    [self.view.layer addSublayer:self.textContainer];
-//
-//	
-//    // Create path from text
-//    // See: http://www.codeproject.com/KB/iPhone/Glyph.aspx
-//    // License: The Code Project Open License (CPOL) 1.02 http://www.codeproject.com/info/cpol10.aspx
-//    CGMutablePathRef lettersOutlinePath = CGPathCreateMutable();
-//    CGMutablePathRef straightLettersPath = CGPathCreateMutable();
-//    
-//	// "Chalkduster"
-//	// "Copperplate"
-//	// "Helvetica Bold"
-//	// "Helvetica Neue UltraLight"
-//	
-//    CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)self.fontName, self.fontSize, NULL);
-//    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
-//                           (id)CFBridgingRelease(font), kCTFontAttributeName,
-//                           nil];
-//    NSAttributedString *attrString = [[NSAttributedString alloc] initWithString:@"Hello i10!"
-//                                                                     attributes:attrs];
-//    CTLineRef line = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)attrString);
-//	CFArrayRef runArray = CTLineGetGlyphRuns(line);
-//    
-//    // for each RUN
-//    for (CFIndex runIndex = 0; runIndex < CFArrayGetCount(runArray); runIndex++)
-//    {
-//        // Get FONT for this run
-//        CTRunRef run = (CTRunRef)CFArrayGetValueAtIndex(runArray, runIndex);
-//        CTFontRef runFont = CFDictionaryGetValue(CTRunGetAttributes(run), kCTFontAttributeName);
-//        
-//        // for each GLYPH in run
-//        for (CFIndex runGlyphIndex = 0; runGlyphIndex < CTRunGetGlyphCount(run); runGlyphIndex++)
-//        {
-//            // get Glyph & Glyph-data
-//            CFRange thisGlyphRange = CFRangeMake(runGlyphIndex, 1);
-//            CGGlyph glyph;
-//            CGPoint position;
-//            CTRunGetGlyphs(run, thisGlyphRange, &glyph);
-//            CTRunGetPositions(run, thisGlyphRange, &position);
-//            
-//            // Get PATH of outline
-//			CGPathRef letterOutlinePath = CTFontCreatePathForGlyph(runFont, glyph, NULL);
-//			CGAffineTransform letterTranslation = CGAffineTransformMakeTranslation(position.x, position.y);
-//			CGPathAddPath(lettersOutlinePath, &letterTranslation, letterOutlinePath);
-//			
-//			// Get PATH of vertical line
-//			CGPathRef straightLetter = CGPathCreateMutable();
-//			NSUInteger numberOfElementsInPath = 0;
-//			CGPathApply(letterOutlinePath, (void *)&numberOfElementsInPath, CGPathElementsCount);
-////			NSLog(@"%s 1 Count of glyph %3d is %2d", __PRETTY_FUNCTION__, (int)runGlyphIndex, numberOfElementsInPath);
-//			currentNumberOfElements = numberOfElementsInPath;
-//			currentElementIndex = 0;
-//			currentGlyphBox = CGPathGetBoundingBox(letterOutlinePath);
-//			CGPathApply(letterOutlinePath, (void *)straightLetter, CGPathMorphToCircles);
-//			numberOfElementsInPath = 0;
-//			CGPathApply(straightLetter, (void *)&numberOfElementsInPath, CGPathElementsCount);
-////			NSLog(@"%s 2 Count of glyph %3d is %2d \n\n\n", __PRETTY_FUNCTION__, (int)runGlyphIndex, numberOfElementsInPath);
-//			
-//			
-//			CGPathAddPath(straightLettersPath, &letterTranslation, straightLetter);
-//			
-//			// cleanup
-//			CGPathRelease(letterOutlinePath);
-//			CGPathRelease(straightLetter);
-//		}
-//    }
-//    CFRelease(line);
-//    
-//    UIBezierPath *clearTextPath = [UIBezierPath bezierPath];
-//    [clearTextPath moveToPoint:CGPointZero];
-//    [clearTextPath appendPath:[UIBezierPath bezierPathWithCGPath:lettersOutlinePath]];
-//	
-//	UIBezierPath *cipherTextPath = [UIBezierPath bezierPath];
-//    [cipherTextPath moveToPoint:CGPointZero];
-//    [cipherTextPath appendPath:[UIBezierPath bezierPathWithCGPath:straightLettersPath]];
-//	
-//    CGPathRelease(lettersOutlinePath);
-//    CFRelease(font);
-//    
-//	
-//	// for now just setup one layer
-//    CipherLayer *lineLayer = [CipherLayer layer];
-//    lineLayer.frame = self.textContainer.bounds;
-//	lineLayer.bounds = CGPathGetBoundingBox(clearTextPath.CGPath);
-//	lineLayer.backgroundColor = [[UIColor yellowColor] CGColor];
-//    lineLayer.geometryFlipped = YES;
-//    lineLayer.path = cipherTextPath.CGPath;
-//	lineLayer.clearTextPath = clearTextPath;
-//	lineLayer.cipherTextPath = cipherTextPath;
-//    lineLayer.strokeColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
-//	lineLayer.fillColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
-//    lineLayer.lineWidth = 3.0f;
-//    lineLayer.lineJoin = kCALineJoinBevel;
-//    
-//    [self.textContainer addSublayer:lineLayer];
-//}
 
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -527,25 +351,37 @@ void CGPathMorphToCircles(void *info, const CGPathElement *element)
 		aLayer.shadowOffset = CGSizeMake(0, 0);
 		
 		[self.touchlayers addObject:aLayer];
-		[self.view.layer addSublayer:aLayer];
+//		[self.view.layer addSublayer:aLayer];
 	}
 	
 	
-	// get the nearest touch
-	CipherLayer *ourOnlyLayer = [self.textContainer.sublayers lastObject];
-	CGPoint layerLocation = [self.view.layer convertPoint:[ourOnlyLayer position] fromLayer:self.textContainer];
-	CGFloat smallestDistance = MAXFLOAT;
+	// iterate over all touches
 	for (int i = 0 ; i < numberOfTouches; i++)
 	{
 		CGPoint aTouchLocation = [sender locationOfTouch:i inView:self.view];
-		CGFloat distance = sqrt( pow(layerLocation.x - aTouchLocation.x, 2.0) + pow(layerLocation.y - aTouchLocation.y, 2.0));
-		smallestDistance = MIN(distance,smallestDistance);
-	}
-	CGFloat morphProgression = (smallestDistance - kMinRevealDistance) / (kMaxRevealDistance - kMinRevealDistance);
-	morphProgression = MAX( MIN(morphProgression, 1.0), 0.0);
+		aTouchLocation = [self.view.layer convertPoint:aTouchLocation toLayer:self.textContainer];
+		
+		for (CipherLayer *aGlyphLayer in self.textContainer.sublayers)
+		{
+//			int chance = arc4random() % 100;
+//			if (chance < 75)
+//				continue;
+			
+			CGPoint layerLocation = aGlyphLayer.position;
+			CGFloat smallestDistance = MAXFLOAT;
+			CGFloat distance = sqrt( (layerLocation.x - aTouchLocation.x)*(layerLocation.x - aTouchLocation.x)
+									+ (layerLocation.y - aTouchLocation.y)*(layerLocation.y - aTouchLocation.y));
+			smallestDistance = MIN(distance,smallestDistance);
+			CGFloat morphProgression = (smallestDistance - kMinRevealDistance) / (kMaxRevealDistance - kMinRevealDistance);
+			morphProgression = MAX( MIN(morphProgression, 1.0), 0.0);
 
-	ourOnlyLayer.degreeOfCipher = 1 - morphProgression; // 0 means full reveal, 1 full hide
+			aGlyphLayer.degreeOfCipher = 1 - morphProgression; // 0 means full reveal, 1 full hide
+		}
+	}
 }
+	
+	
+
 
 
 @end

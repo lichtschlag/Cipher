@@ -1,22 +1,17 @@
 //
-//  CipherLayer.h
+//  UIBezierPath+PathMorphing.m
 //  Cipher
 //
-//  Created by Leonhard Lichtschlag on 2/Jun/13.
+//  Created by Leonhard Lichtschlag on 4/Jun/13.
 //  Copyright (c) 2013 Leonhard Lichtschlag. All rights reserved.
 //
 
-#import <QuartzCore/QuartzCore.h>
-
+#import "UIBezierPath+PathMorphing.h"
 
 // ===============================================================================================================
-@interface CipherLayer : CAShapeLayer
+@implementation UIBezierPath (PathMorphing)
 // ===============================================================================================================
 
-@property (strong) UIBezierPath *clearTextPath;
-@property (strong) UIBezierPath *cipherTextPath;
-@property (nonatomic) CGFloat degreeOfCipher;
-
-- (void) prep;
 
 @end
+
