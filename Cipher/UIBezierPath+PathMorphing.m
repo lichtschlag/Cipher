@@ -84,13 +84,66 @@
 + (UIBezierPath *) pathByMorphingFromPath:(UIBezierPath *)fromPath toPath:(UIBezierPath *)toPath progress:(float)p;
 {
 	CGMutablePathRef newPath = CGPathCreateMutable();
+	NSUInteger count = [fromPath countOfPathElements];
 	
 	// copy path points from first cgpath into a buffer array
+	CGPoint *points = calloc(count * 3, sizeof(CGPoint));  // already zeroed
+	__block NSUInteger offset = 0;
 	
 	// iterate over second cgpath to get the other half of the points
-	// interpolate all points in the array by p
+	[fromPath enumeratePathElementsUsingBlock:^(const CGPathElement *element)
+	{
+		CGPathElementType currentPointType = element->type;
+		if (currentPointType == kCGPathElementAddCurveToPoint)
+		{
+			points[offset]   = element->points[0];
+			points[offset+1] = element->points[1];
+			points[offset+2] = element->points[2];
+		}
+		else if (currentPointType == kCGPathElementMoveToPoint)
+		{
+			points[offset]   = element->points[0];
+		}
+
+		offset += 3;
+	}];
 	
-	// construct a new path from the points
+	// iterate over second cgpath to get the other half of the points
+	[toPath enumeratePathElementsUsingBlock:^(const CGPathElement *element)
+	{
+		 CGPathElementType currentPointType = element->type;
+		 if (currentPointType == kCGPathElementAddCurveToPoint)
+		 {
+			 CGPoint controlPoint1 = CGPointMake(element->points[0].x *p	+ points[0].x *(1-p),
+												 element->points[0].y *p	+ points[0].y *(1-p));
+			 CGPoint controlPoint2 = CGPointMake(element->points[1].x *p	+ points[1].x *(1-p),
+												 element->points[1].y *p	+ points[1].y *(1-p));
+			 CGPoint endPoint	   = CGPointMake(element->points[2].x *p	+ points[2].x *(1-p),
+												 element->points[2].y *p	+ points[2].y *(1-p));
+			 CGPathAddCurveToPoint(newPath, NULL,
+								   controlPoint1.x, controlPoint1.y,
+								   controlPoint2.x, controlPoint2.y,
+								   endPoint.x, endPoint.y);
+		 }
+		 else if (currentPointType == kCGPathElementMoveToPoint)
+		 {
+			 CGPoint endPoint	   = CGPointMake(element->points[0].x *p	+ points[0].x *(1-p),
+												 element->points[0].y *p	+ points[0].y *(1-p));
+			 CGPathMoveToPoint(newPath, NULL, endPoint.x, endPoint.y);
+		 }
+		 else if (currentPointType == kCGPathElementCloseSubpath)
+		 {
+			 CGPathCloseSubpath(newPath);
+		 }
+		 else
+		 {
+			 NSAssert(NO, @"Unexpected Path Element Type");
+		 }
+		 
+		 offset += 3;
+	}];
+	
+	free(points);
 	
 	return [UIBezierPath bezierPathWithCGPath:newPath];
 }
