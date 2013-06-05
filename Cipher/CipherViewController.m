@@ -29,7 +29,8 @@
 static NSUInteger currentNumberOfElements	= 0;
 static NSUInteger currentElementIndex		= 0;
 static CGRect     currentGlyphBox;
-
+static BOOL		  isFirstPoint = YES;
+static CGFloat    startingAngle = 0;
 
 static const CGFloat kMarginWidth		=	80;
 static const CGFloat kMarginHeight		=	40;
@@ -149,6 +150,8 @@ static const CGFloat kMaxRevealDistance	=  100;
 				currentNumberOfElements = numberOfElementsInPath;
 				currentElementIndex = 0;
 				currentGlyphBox = CGPathGetBoundingBox(letterOutlinePath);
+				isFirstPoint = YES;
+				startingAngle = 0;
 				CGPathApply(letterOutlinePath, (void *)straightLetter, CGPathMorphToCircles);
 				numberOfElementsInPath = 0;
 				CGPathApply(straightLetter, (void *)&numberOfElementsInPath, CGPathElementsCount);
@@ -255,29 +258,39 @@ void CGPathMorphToCircles(void *info, const CGPathElement *element)
 	CGPathElementType currentPointType = element->type;
 	if (currentPointType == kCGPathElementCloseSubpath)
 	{
-		//		CGPathCloseSubpath(lineLetter);
+		//CGPathCloseSubpath(lineLetter);
 		return;
 	}
 	
 	// compute position
-	CGPoint point = currentGlyphBox.origin;
+	CGPoint origin = currentGlyphBox.origin;
 	CGFloat radius = MIN(currentGlyphBox.size.width, currentGlyphBox.size.height) / 2.0;
-	CGFloat angle = 2*M_PI * ((float)currentElementIndex  / (float)currentNumberOfElements);
-	point.x = point.x + (currentGlyphBox.size.width / 2.0);
-	point.y = point.y + (currentGlyphBox.size.height / 2.0);
+	CGPoint middlePos;
+	middlePos.x = origin.x + (currentGlyphBox.size.width / 2.0);
+	middlePos.y = origin.y + (currentGlyphBox.size.height / 2.0);
 	
-	CGPoint middlePos =  point;
 	
-	point.x = middlePos.x + sin(angle)* radius;
-	point.y = middlePos.y + cos(angle)* radius;
+	if (isFirstPoint)
+	{
+		isFirstPoint = NO;
+		// compute the starting angle
+		CGPoint originalPoint = element->points[0];
+		CGPoint delta = CGPointMake(originalPoint.x - middlePos.x,
+									originalPoint.y - middlePos.y);
+		startingAngle = atan2(delta.x, delta.y);
+	}
 	
-	CGPoint endPos = point;
+	CGFloat angle = 2*M_PI * ((float)currentElementIndex  / (float)currentNumberOfElements) +startingAngle;
+	CGPoint endPos;
+	endPos.x = middlePos.x + sin(angle)* radius;
+	endPos.y = middlePos.y + cos(angle)* radius;
 	
-	CGFloat beginAngle = 2*M_PI * (((float)currentElementIndex-1)  / (float)currentNumberOfElements);
-	CGFloat halfAngle = 2*M_PI * (((float)currentElementIndex-0.5)  / (float)currentNumberOfElements);
+	
+//	CGFloat beginAngle = 2*M_PI * (((float)currentElementIndex-1)  / (float)currentNumberOfElements) +startingAngle;
+	CGFloat halfAngle = 2*M_PI * (((float)currentElementIndex-0.5)  / (float)currentNumberOfElements) +startingAngle;
 	CGFloat deltaAngle =  2*M_PI * (1.0  / (float)currentNumberOfElements);
 	
-	CGPoint halfPos = CGPointMake(middlePos.x + sin(halfAngle)* radius, middlePos.y + cos(halfAngle)* radius);
+//	CGPoint halfPos = CGPointMake(middlePos.x + sin(halfAngle)* radius, middlePos.y + cos(halfAngle)* radius);
 	
 	CGFloat Cradius = radius * sqrt(1+tan(deltaAngle/2.0)*tan(deltaAngle/2.0));
 	
@@ -288,27 +301,28 @@ void CGPathMorphToCircles(void *info, const CGPathElement *element)
 	
 	if (currentPointType == kCGPathElementMoveToPoint)
 	{
-		CGPathMoveToPoint(lineLetter, NULL, point.x, point.y);
+		CGPathMoveToPoint(lineLetter, NULL, endPos.x, endPos.y);
 	}
 	else
 	{
-		CGPoint beginPos =  CGPathGetCurrentPoint(lineLetter);
-		//		CGPathAddLineToPoint(lineLetter, NULL, point.x, point.y);
-		//		CGPathAddArc(lineLetter, NULL, middlePos.x, middlePos.y, radius, beginAngle, angle, YES);
-		//		CGPathAddRelativeArc(lineLetter, NULL, middlePos.x, middlePos.y, radius, angle, 2*M_PI * (1.0  / (float)currentNumberOfElements));
-		//		CGPoint halfPos = CGPointMake((beginPos.x + endPos.x) /2.0, (beginPos.y + endPos.y) /2.0);
-		
-		
-		// http://en.wikipedia.org/wiki/B%C3%A9zier_spline#Approximating_circular_arcs
-		CGFloat deltaAngle =  2*M_PI * (1.0  / (float)currentNumberOfElements);
-		CGPoint A = CGPointMake(radius * cos(deltaAngle/2.0f), radius * sin(deltaAngle/2.0f));
-		CGPoint B = CGPointMake(A.x, -A.y);
-		
-		CGPoint Aprime = CGPointMake( (4.0f-A.x)/3.0f,  (1.0f-A.x)*(3.0f-A.x)/(3.0f*A.y) );
-		CGPoint Bprime = CGPointMake( Aprime.x, -Aprime.y);
-		
-		CGAffineTransform rotation = CGAffineTransformMakeRotation(angle - deltaAngle/2.0f);
-		//		CGPathAddCurveToPoint(lineLetter, &rotation, Aprime.x, Aprime.y, Bprime.x, Bprime.y, B.x, B.y);
+//		CGPathAddLineToPoint(lineLetter, NULL, endPos.x, endPos.y);
+
+//		CGPoint beginPos =  CGPathGetCurrentPoint(lineLetter);
+//		//		CGPathAddArc(lineLetter, NULL, middlePos.x, middlePos.y, radius, beginAngle, angle, YES);
+//		//		CGPathAddRelativeArc(lineLetter, NULL, middlePos.x, middlePos.y, radius, angle, 2*M_PI * (1.0  / (float)currentNumberOfElements));
+//		//		CGPoint halfPos = CGPointMake((beginPos.x + endPos.x) /2.0, (beginPos.y + endPos.y) /2.0);
+//		
+//		
+//		// http://en.wikipedia.org/wiki/B%C3%A9zier_spline#Approximating_circular_arcs
+////		CGFloat deltaAngle =  2*M_PI * (1.0  / (float)currentNumberOfElements);
+//		CGPoint A = CGPointMake(radius * cos(deltaAngle/2.0f), radius * sin(deltaAngle/2.0f));
+//		CGPoint B = CGPointMake(A.x, -A.y);
+//		
+//		CGPoint Aprime = CGPointMake( (4.0f-A.x)/3.0f,  (1.0f-A.x)*(3.0f-A.x)/(3.0f*A.y) );
+//		CGPoint Bprime = CGPointMake( Aprime.x, -Aprime.y);
+//		
+//		CGAffineTransform rotation = CGAffineTransformMakeRotation(angle - deltaAngle/2.0f);
+//		//		CGPathAddCurveToPoint(lineLetter, &rotation, Aprime.x, Aprime.y, Bprime.x, Bprime.y, B.x, B.y);
 		
 		
 		CGPathAddQuadCurveToPoint(lineLetter, NULL, CPos.x, CPos.y, endPos.x, endPos.y);

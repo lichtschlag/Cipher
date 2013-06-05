@@ -20,6 +20,7 @@
 - (NSUInteger) countOfVisiblePathElements;
 - (NSUInteger) countOfSubPaths;
 
+
 @end
 
 

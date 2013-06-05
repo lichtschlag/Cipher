@@ -16,7 +16,5 @@
 @property (strong) NSString *fontName;
 @property NSUInteger fontSize;
 
-- (IBAction) userDidLongPress:(UIGestureRecognizer *)sender;
-
 
 @end
