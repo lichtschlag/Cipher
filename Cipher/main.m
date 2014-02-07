@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Leonhard Lichtschlag. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+//@import UIKit;
 #import "CipherAppDelegate.h"
 
 

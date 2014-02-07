@@ -30,7 +30,7 @@
 	CipherViewController *experiment2 = [CipherViewController new];
 	experiment2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Copperplate" image:[UIImage imageNamed:@"second"] tag:22];
 	experiment2.fontName	= @"Copperplate";
-	experiment2.fontSize	= 80.0f;
+	experiment2.fontSize	= 30.0f;
 	
 	[tabBar addChildViewController:experiment2];
 	

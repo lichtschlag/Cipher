@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Leonhard Lichtschlag. All rights reserved.
 //
 
-#import "CipherViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import <CoreText/CoreText.h>
+#import "CipherViewController.h"
 #import "CipherLayer.h"
 
 
@@ -185,7 +185,7 @@ static const CGFloat kMaxRevealDistance	=  100;
 				glyphLayer.cipherTextPath = cipherTextPath;
 				[glyphLayer prep];
 				glyphLayer.path = cipherTextPath.CGPath;
-				
+				 
 				glyphLayer.anchorPoint = CGPointMake(0,0);
 				
 				glyphLayer.frame = currentGlyphBox;
