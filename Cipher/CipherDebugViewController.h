@@ -1,23 +1,17 @@
 //
-//  CipherLayer.h
+//  CipherDebugViewController.h
 //  Cipher
 //
-//  Created by Leonhard Lichtschlag on 2/Jun/13.
+//  Created by Leonhard Lichtschlag on 1/Jun/13.
 //  Copyright (c) 2013 Leonhard Lichtschlag. All rights reserved.
 //
 
-#import <QuartzCore/QuartzCore.h>
+#import <UIKit/UIKit.h>
 
 
 // ===============================================================================================================
-@interface CipherLayer : CAShapeLayer
+@interface CipherDebugViewController : UIViewController
 // ===============================================================================================================
-
-@property (strong) UIBezierPath *clearTextPath;
-@property (strong) UIBezierPath *cipherTextPath;
-@property (nonatomic) CGFloat degreeOfCipher;
-
-- (void) prep;
 
 
 @end

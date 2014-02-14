@@ -8,6 +8,7 @@
 
 #import "CipherAppDelegate.h"
 #import "CipherViewController.h"
+#import "CipherDebugViewController.h"
 
 
 // ===============================================================================================================
@@ -20,6 +21,16 @@
 	
 	UITabBarController *tabBar = (UITabBarController *)[self.window rootViewController];
 	
+	
+	// debug
+	CipherDebugViewController *debug = [CipherDebugViewController new];
+	debug.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:[UIImage imageNamed:@"second"] tag:24];
+	
+	[tabBar addChildViewController:debug];
+	
+
+	
+	
 	CipherViewController *experiment1 = [CipherViewController new];
 	experiment1.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Helvetica" image:[UIImage imageNamed:@"first"] tag:21];
 	experiment1.fontName	= @"Helvetica-Bold";
@@ -28,20 +39,23 @@
 	[tabBar addChildViewController:experiment1];
 
 	CipherViewController *experiment2 = [CipherViewController new];
-	experiment2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Copperplate" image:[UIImage imageNamed:@"second"] tag:22];
+	experiment2.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Copperplate" image:[UIImage imageNamed:@"first"] tag:22];
 	experiment2.fontName	= @"Copperplate";
 	experiment2.fontSize	= 30.0f;
 	
 	[tabBar addChildViewController:experiment2];
 	
 	CipherViewController *experiment3 = [CipherViewController new];
-	experiment3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Whatever" image:[UIImage imageNamed:@"second"] tag:23];
+	experiment3.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Helvetica Large" image:[UIImage imageNamed:@"first"] tag:23];
 	experiment3.fontName	= @"Helvetica";
 	experiment3.fontSize	= 164.0f;
 	
 	[tabBar addChildViewController:experiment3];
 
-    return YES;
+	
+    
+	
+	return YES;
 }
 
 

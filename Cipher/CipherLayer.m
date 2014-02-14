@@ -30,7 +30,7 @@ NSString *const kMorphAnimationKey      = @"kMorphAnimationKey";
     self = [super init];
     if (self)
 	{
-        _degreeOfCipher = 1;
+        self.degreeOfCipher = 1;
 		
 		self.prototypeAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
 		self.prototypeAnimation.duration = 1.01;
@@ -40,6 +40,7 @@ NSString *const kMorphAnimationKey      = @"kMorphAnimationKey";
     return self;
 }
 
+
 - (void) prep;
 {
 	self.prototypeAnimation.fromValue = (id)(self.clearTextPath.CGPath);
@@ -47,7 +48,7 @@ NSString *const kMorphAnimationKey      = @"kMorphAnimationKey";
 
 	self.backgroundColor = [UIColor whiteColor].CGColor;
 	self.opaque = YES;
-	self.drawsAsynchronously = YES;
+	self.drawsAsynchronously = NO;
 }
 
 

@@ -20,12 +20,13 @@
 		3F310BD4175A9E480093AF99 /* CipherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BD3175A9E480093AF99 /* CipherViewController.m */; };
 		3F310BD6175A9E480093AF99 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BD5175A9E480093AF99 /* first.png */; };
 		3F310BD8175A9E480093AF99 /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BD7175A9E480093AF99 /* first@2x.png */; };
-		3F310BDB175A9E480093AF99 /* CipherSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BDA175A9E480093AF99 /* CipherSecondViewController.m */; };
+		3F310BDB175A9E480093AF99 /* CipherDebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BDA175A9E480093AF99 /* CipherDebugViewController.m */; };
 		3F310BDD175A9E480093AF99 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BDC175A9E480093AF99 /* second.png */; };
 		3F310BDF175A9E480093AF99 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BDE175A9E480093AF99 /* second@2x.png */; };
 		3F310BE7175A9FEA0093AF99 /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BE6175A9FEA0093AF99 /* iPhone.storyboard */; };
 		3F310BEE175AB75B0093AF99 /* CipherLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BED175AB75B0093AF99 /* CipherLayer.m */; };
 		3F310BF2175E47E30093AF99 /* UIBezierPath+PathMorphing.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */; };
+		3FA2FCBF18AE67D600209EDC /* CipherDebugLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA2FCBE18AE67D600209EDC /* CipherDebugLayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,8 +48,8 @@
 		3F310BD3175A9E480093AF99 /* CipherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CipherViewController.m; sourceTree = "<group>"; };
 		3F310BD5175A9E480093AF99 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
 		3F310BD7175A9E480093AF99 /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
-		3F310BD9175A9E480093AF99 /* CipherSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CipherSecondViewController.h; sourceTree = "<group>"; };
-		3F310BDA175A9E480093AF99 /* CipherSecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CipherSecondViewController.m; sourceTree = "<group>"; };
+		3F310BD9175A9E480093AF99 /* CipherDebugViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CipherDebugViewController.h; sourceTree = "<group>"; };
+		3F310BDA175A9E480093AF99 /* CipherDebugViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CipherDebugViewController.m; sourceTree = "<group>"; };
 		3F310BDC175A9E480093AF99 /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
 		3F310BDE175A9E480093AF99 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		3F310BE6175A9FEA0093AF99 /* iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = iPhone.storyboard; path = en.lproj/iPhone.storyboard; sourceTree = "<group>"; };
@@ -56,6 +57,8 @@
 		3F310BED175AB75B0093AF99 /* CipherLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherLayer.m; sourceTree = "<group>"; };
 		3F310BF0175E47E30093AF99 /* UIBezierPath+PathMorphing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+PathMorphing.h"; sourceTree = "<group>"; };
 		3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+PathMorphing.m"; sourceTree = "<group>"; };
+		3FA2FCBD18AE67D600209EDC /* CipherDebugLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherDebugLayer.h; sourceTree = "<group>"; };
+		3FA2FCBE18AE67D600209EDC /* CipherDebugLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherDebugLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +80,7 @@
 			children = (
 				3F310BBD175A9E480093AF99 /* App Core */,
 				3F310BE5175A9EC50093AF99 /* Main View */,
+				3FA2FCBC18AE67BC00209EDC /* Debug */,
 				3F310BEF175E47B30093AF99 /* UIBezierPath Categories */,
 				3F310BBE175A9E480093AF99 /* Resources */,
 				3F310BB6175A9E480093AF99 /* Frameworks */,
@@ -138,8 +142,6 @@
 			children = (
 				3F310BD2175A9E480093AF99 /* CipherViewController.h */,
 				3F310BD3175A9E480093AF99 /* CipherViewController.m */,
-				3F310BD9175A9E480093AF99 /* CipherSecondViewController.h */,
-				3F310BDA175A9E480093AF99 /* CipherSecondViewController.m */,
 				3F310BEC175AB75B0093AF99 /* CipherLayer.h */,
 				3F310BED175AB75B0093AF99 /* CipherLayer.m */,
 			);
@@ -154,6 +156,18 @@
 				3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */,
 			);
 			name = "UIBezierPath Categories";
+			path = Cipher;
+			sourceTree = "<group>";
+		};
+		3FA2FCBC18AE67BC00209EDC /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				3F310BD9175A9E480093AF99 /* CipherDebugViewController.h */,
+				3F310BDA175A9E480093AF99 /* CipherDebugViewController.m */,
+				3FA2FCBD18AE67D600209EDC /* CipherDebugLayer.h */,
+				3FA2FCBE18AE67D600209EDC /* CipherDebugLayer.m */,
+			);
+			name = Debug;
 			path = Cipher;
 			sourceTree = "<group>";
 		};
@@ -231,8 +245,9 @@
 			files = (
 				3F310BC4175A9E480093AF99 /* main.m in Sources */,
 				3F310BC8175A9E480093AF99 /* CipherAppDelegate.m in Sources */,
+				3FA2FCBF18AE67D600209EDC /* CipherDebugLayer.m in Sources */,
 				3F310BD4175A9E480093AF99 /* CipherViewController.m in Sources */,
-				3F310BDB175A9E480093AF99 /* CipherSecondViewController.m in Sources */,
+				3F310BDB175A9E480093AF99 /* CipherDebugViewController.m in Sources */,
 				3F310BEE175AB75B0093AF99 /* CipherLayer.m in Sources */,
 				3F310BF2175E47E30093AF99 /* UIBezierPath+PathMorphing.m in Sources */,
 			);
@@ -286,10 +301,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -312,10 +325,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

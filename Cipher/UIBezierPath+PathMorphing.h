@@ -13,12 +13,16 @@
 @interface UIBezierPath (PathMorphing)
 // ===============================================================================================================
 
-+ (UIBezierPath *) pathByConvertingPathToCurves:(UIBezierPath *)basePath;
-+ (UIBezierPath *) pathByMorphingFromPath:(UIBezierPath *)fromPath toPath:(UIBezierPath *)toPath progress:(float)p;
++ (UIBezierPath *) bezierPathByConvertingPathToCurves:(UIBezierPath *)basePath;
++ (UIBezierPath *) bezierPathByMorphingFromPath:(UIBezierPath *)fromPath toPath:(UIBezierPath *)toPath progress:(float)p;
+
+- (void) logPathElements;
 
 - (NSUInteger) countOfPathElements;
 - (NSUInteger) countOfVisiblePathElements;
 - (NSUInteger) countOfSubPaths;
+
+- (void) enumeratePathElementsUsingBlock:(void (^)(const CGPathElement *element))enumerateBlock;
 
 
 @end

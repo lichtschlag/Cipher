@@ -1,17 +1,17 @@
 //
-//  CipherSecondViewController.h
+//  CipherDebugLayer.h
 //  Cipher
 //
-//  Created by Leonhard Lichtschlag on 1/Jun/13.
-//  Copyright (c) 2013 Leonhard Lichtschlag. All rights reserved.
+//  Created by Leonhard Lichtschlag on 14/Feb/14.
+//  Copyright (c) 2014 Leonhard Lichtschlag. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 
 // ===============================================================================================================
-@interface CipherSecondViewController : UIViewController
+@interface CipherDebugLayer : CALayer
 // ===============================================================================================================
+
+@property (strong) UIBezierPath *debugPath;
 
 
 @end

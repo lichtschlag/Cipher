@@ -12,7 +12,7 @@
 @implementation UIBezierPath (PathMorphing)
 // ===============================================================================================================
 
-+ (UIBezierPath *) pathByConvertingPathToCurves:(UIBezierPath *)basePath;
++ (UIBezierPath *) bezierPathByConvertingPathToCurves:(UIBezierPath *)basePath;
 {
 	CGMutablePathRef newPath = CGPathCreateMutable();
 	
@@ -81,10 +81,11 @@
 
 
 // will crash if paths are not of the same length or not of the same topology?
-+ (UIBezierPath *) pathByMorphingFromPath:(UIBezierPath *)fromPath toPath:(UIBezierPath *)toPath progress:(float)p;
++ (UIBezierPath *) bezierPathByMorphingFromPath:(UIBezierPath *)fromPath toPath:(UIBezierPath *)toPath progress:(float)p;
 {
 	CGMutablePathRef newPath = CGPathCreateMutable();
-	NSUInteger count = [fromPath countOfPathElements];
+	NSUInteger count = MAX([fromPath countOfPathElements], [toPath countOfPathElements]);
+	NSUInteger maxOffset = count * 3;
 	
 	// copy path points from first cgpath into a buffer array
 	CGPoint *points = calloc(count * 3, sizeof(CGPoint));  // already zeroed
@@ -93,6 +94,7 @@
 	// iterate over second cgpath to get the other half of the points
 	[fromPath enumeratePathElementsUsingBlock:^(const CGPathElement *element)
 	{
+		NSAssert(offset < maxOffset, @"Buffer overflow while morphing paths");
 		CGPathElementType currentPointType = element->type;
 		if (currentPointType == kCGPathElementAddCurveToPoint)
 		{
@@ -108,39 +110,41 @@
 		offset += 3;
 	}];
 	
+	offset = 0;
 	// iterate over second cgpath to get the other half of the points
 	[toPath enumeratePathElementsUsingBlock:^(const CGPathElement *element)
 	{
-		 CGPathElementType currentPointType = element->type;
-		 if (currentPointType == kCGPathElementAddCurveToPoint)
-		 {
-			 CGPoint controlPoint1 = CGPointMake(element->points[0].x *p	+ points[0].x *(1-p),
-												 element->points[0].y *p	+ points[0].y *(1-p));
-			 CGPoint controlPoint2 = CGPointMake(element->points[1].x *p	+ points[1].x *(1-p),
-												 element->points[1].y *p	+ points[1].y *(1-p));
-			 CGPoint endPoint	   = CGPointMake(element->points[2].x *p	+ points[2].x *(1-p),
-												 element->points[2].y *p	+ points[2].y *(1-p));
-			 CGPathAddCurveToPoint(newPath, NULL,
-								   controlPoint1.x, controlPoint1.y,
-								   controlPoint2.x, controlPoint2.y,
-								   endPoint.x, endPoint.y);
-		 }
-		 else if (currentPointType == kCGPathElementMoveToPoint)
-		 {
-			 CGPoint endPoint	   = CGPointMake(element->points[0].x *p	+ points[0].x *(1-p),
-												 element->points[0].y *p	+ points[0].y *(1-p));
-			 CGPathMoveToPoint(newPath, NULL, endPoint.x, endPoint.y);
-		 }
-		 else if (currentPointType == kCGPathElementCloseSubpath)
-		 {
-			 CGPathCloseSubpath(newPath);
-		 }
-		 else
-		 {
-			 NSAssert(NO, @"Unexpected Path Element Type");
-		 }
-		 
-		 offset += 3;
+		NSAssert(offset < maxOffset, @"Buffer overflow while morphing paths");
+		CGPathElementType currentPointType = element->type;
+		if (currentPointType == kCGPathElementAddCurveToPoint)
+		{
+			CGPoint controlPoint1 = CGPointMake(element->points[0].x *p	+ points[offset+0].x *(1-p),
+												element->points[0].y *p	+ points[offset+0].y *(1-p));
+			CGPoint controlPoint2 = CGPointMake(element->points[1].x *p	+ points[offset+1].x *(1-p),
+												element->points[1].y *p	+ points[offset+1].y *(1-p));
+			CGPoint endPoint	   = CGPointMake(element->points[2].x *p	+ points[offset+2].x *(1-p),
+												 element->points[2].y *p	+ points[offset+2].y *(1-p));
+			CGPathAddCurveToPoint(newPath, NULL,
+								  controlPoint1.x, controlPoint1.y,
+								  controlPoint2.x, controlPoint2.y,
+								  endPoint.x, endPoint.y);
+		}
+		else if (currentPointType == kCGPathElementMoveToPoint)
+		{
+			CGPoint endPoint	   = CGPointMake(element->points[0].x *p	+ points[offset+0].x *(1-p),
+												 element->points[0].y *p	+ points[offset+0].y *(1-p));
+			CGPathMoveToPoint(newPath, NULL, endPoint.x, endPoint.y);
+		}
+		else if (currentPointType == kCGPathElementCloseSubpath)
+		{
+			CGPathCloseSubpath(newPath);
+		}
+		else
+		{
+			NSAssert(NO, @"Unexpected Path Element Type");
+		}
+
+		offset += 3;
 	}];
 	
 	free(points);
@@ -161,6 +165,7 @@
 }
 
 
+// TODO: Close might as well be visible
 - (NSUInteger) countOfVisiblePathElements;
 {
 	__block NSUInteger count = 0;
@@ -186,6 +191,21 @@
 			count++;
 	}];
 	return count;
+}
+
+- (void) logPathElements
+{
+	[self enumeratePathElementsUsingBlock:^(const CGPathElement *element)
+	 {
+		 CGPathElementType currentPointType = element->type;
+		 NSString *output =	 (currentPointType == kCGPathElementMoveToPoint)		? @"kCGPathElementMoveToPoint" :
+							 (currentPointType == kCGPathElementAddLineToPoint)		? @"kCGPathElementAddLineToPoint" :
+							 (currentPointType == kCGPathElementAddQuadCurveToPoint)? @"kCGPathElementAddQuadCurveToPoint" :
+							 (currentPointType == kCGPathElementAddCurveToPoint)	? @"kCGPathElementAddCurveToPoint" :
+							 (currentPointType == kCGPathElementCloseSubpath)		? @"kCGPathElementCloseSubpath" :
+							 @"unknown type";
+		 NSLog(@"%@", output);
+	 }];
 }
 
 
