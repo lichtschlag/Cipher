@@ -9,7 +9,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreText/CoreText.h>
 #import "CipherViewController.h"
-#import "CipherLayer.h"
+//#import "CipherLayer.h"
+#import "CipherLayerQuartz.h"
 
 
 // ===============================================================================================================
@@ -180,11 +181,11 @@ static const CGFloat kMaxRevealDistance	=  100;
 				
 				// create visuals for this glyph
 				
-				CipherLayer *glyphLayer = [CipherLayer layer];
+//				CipherLayer *glyphLayer = [CipherLayer layer];
+				CipherLayerQuartz *glyphLayer = [CipherLayerQuartz layer];
 				glyphLayer.clearTextPath = clearTextPath;
 				glyphLayer.cipherTextPath = cipherTextPath;
 				[glyphLayer prep];
-				glyphLayer.path = cipherTextPath.CGPath;
 				 
 				glyphLayer.anchorPoint = CGPointMake(0,0);
 				
@@ -404,7 +405,8 @@ void CGPathMorphToCircles(void *info, const CGPathElement *element)
 		
 		aTouchLocation = [self.view.layer convertPoint:aTouchLocation toLayer:self.textContainer];
 		
-		for (CipherLayer *aGlyphLayer in self.textContainer.sublayers)
+		for (CipherLayerQuartz *aGlyphLayer in self.textContainer.sublayers)
+//		for (CipherLayer *aGlyphLayer in self.textContainer.sublayers)
 		{
 //			int chance = arc4random() % 100;
 //			if (chance < 75)

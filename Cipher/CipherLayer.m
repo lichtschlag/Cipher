@@ -8,6 +8,7 @@
 
 #import "CipherLayer.h"
 
+#define USE_OUR_OWN_MORPHING
 
 // =================================================================================================================
 @interface CipherLayer()
@@ -32,10 +33,15 @@ NSString *const kMorphAnimationKey      = @"kMorphAnimationKey";
 	{
         self.degreeOfCipher = 1;
 		
+#ifdef USE_OUR_OWN_MORPHING
+		//
+#else
 		self.prototypeAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
 		self.prototypeAnimation.duration = 1.01;
 		self.prototypeAnimation.speed = 0;
 		self.prototypeAnimation.timeOffset = _degreeOfCipher;
+#endif
+		
     }
     return self;
 }
@@ -48,7 +54,16 @@ NSString *const kMorphAnimationKey      = @"kMorphAnimationKey";
 
 	self.backgroundColor = [UIColor whiteColor].CGColor;
 	self.opaque = YES;
+	
+	self.path = self.cipherTextPath.CGPath;
+	
+#ifdef USE_OUR_OWN_MORPHING
+	self.drawsAsynchronously = YES;
+	self.cipherTextPath = [UIBezierPath bezierPathByConvertingPathToCurves:self.cipherTextPath];
+	self.clearTextPath = [UIBezierPath bezierPathByConvertingPathToCurves:self.clearTextPath];
+#else
 	self.drawsAsynchronously = NO;
+#endif
 }
 
 
@@ -59,35 +74,52 @@ NSString *const kMorphAnimationKey      = @"kMorphAnimationKey";
 	
 	_degreeOfCipher = degreeOfCipher;
 	
-	[self removeAnimationForKey:kMorphAnimationKey];
-
+#ifdef USE_OUR_OWN_MORPHING
 	if (degreeOfCipher == 1.0)
 	{
 		self.path = self.cipherTextPath.CGPath;
-//		[CATransaction begin];
-//		[CATransaction setDisableActions: YES];
-//		self.hidden = YES;
-//		[CATransaction commit];
 	}
 	else if (degreeOfCipher == 0.0)
 	{
 		self.path = self.clearTextPath.CGPath;
-//		[CATransaction begin];
-//		[CATransaction setDisableActions: YES];
-//		self.hidden = YES;
-//		[CATransaction commit];
 	}
 	else
 	{
-//		[CATransaction begin];
-//		[CATransaction setDisableActions: YES];
-//		self.hidden = NO;
-//		[CATransaction commit];
+		self.path = [UIBezierPath bezierPathByMorphingFromPath:self.clearTextPath toPath:self.cipherTextPath progress:_degreeOfCipher].CGPath;
+	}
+#else
+	[self removeAnimationForKey:kMorphAnimationKey];
+	if (degreeOfCipher == 1.0)
+	{
+		self.path = self.cipherTextPath.CGPath;
+		//		[CATransaction begin];
+		//		[CATransaction setDisableActions: YES];
+		//		self.hidden = YES;
+		//		[CATransaction commit];
+	}
+	else if (degreeOfCipher == 0.0)
+	{
+		self.path = self.clearTextPath.CGPath;
+		//		[CATransaction begin];
+		//		[CATransaction setDisableActions: YES];
+		//		self.hidden = YES;
+		//		[CATransaction commit];
+	}
+	else
+	{
+		//		[CATransaction begin];
+		//		[CATransaction setDisableActions: YES];
+		//		self.hidden = NO;
+		//		[CATransaction commit];
 		//	A copy from the prototype speeds up the setup of the animation by -20%
 		CABasicAnimation *animation = [self.prototypeAnimation copy];
 		animation.timeOffset = _degreeOfCipher;
 		[self addAnimation:animation forKey:kMorphAnimationKey];
 	}
+
+#endif
+
+
 }
 
 
