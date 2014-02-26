@@ -55,6 +55,9 @@ static const CGFloat kMarginHeight		=	40;
 
 	// debug row 1
 	UIBezierPath *startPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 100, 100)];
+//	[self boxGraphWithSize:CGSizeMake(100, 100)]; //
+//	[startPath logPathElements];
+//	[[UIBezierPath bezierPathByConvertingPathToCurves:startPath] logPathElements];
 	UIBezierPath *endPath = [startPath copy];
 	[endPath applyTransform:CGAffineTransformMakeRotation(M_PI_4)];
 	
@@ -88,6 +91,7 @@ static const CGFloat kMarginHeight		=	40;
 	// debug row 3
 	UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 100, 100)];
 	// TODO: ask why rotations by 90 degress do nothing
+	// On device---but not simulator---90 deg rotations will often default to no-op.
 	[circlePath applyTransform:CGAffineTransformMakeRotation(-1.999*M_PI_4)];
 //	[circlePath logPathElements];
 	
@@ -132,11 +136,16 @@ static const CGFloat kMarginHeight		=	40;
 }
 
 
-//- (UIBezierPath *) boxGraphWithSize:(CGSize)boundingBox
-//{
-//	UIBezierPath *boxGraph = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, boundingBox.width, boundingBox.height)];
-//	return boxGraph;
-//}
+- (UIBezierPath *) boxGraphWithSize:(CGSize)boundingBox
+{
+	UIBezierPath *boxGraph = [UIBezierPath bezierPath];
+	[boxGraph moveToPoint:CGPointMake(0, 0)];
+	[boxGraph addLineToPoint:CGPointMake(boundingBox.width, 0)];
+	[boxGraph addLineToPoint:CGPointMake(boundingBox.width, boundingBox.height)];
+	[boxGraph addLineToPoint:CGPointMake(0, boundingBox.height)];
+	[boxGraph closePath];
+	return boxGraph;
+}
 
 
 @end

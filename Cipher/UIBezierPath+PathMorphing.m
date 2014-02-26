@@ -19,12 +19,15 @@
 	// From NSBezierPath documentation:
 	// For curve operations, the order of the points is controlPoint1 (points[0]), controlPoint2 (points[1]), endPoint (points[2]).
 	
+	__block CGPoint firstPointOfSubpath = CGPointZero;
+
 	[basePath enumeratePathElementsUsingBlock:^(const CGPathElement *element)
 	{
 		CGPathElementType currentPointType = element->type;
 		if (currentPointType == kCGPathElementMoveToPoint)
 		{
 			CGPoint endPoint = element->points[0];
+			firstPointOfSubpath = endPoint;
 			CGPathMoveToPoint(newPath, NULL, endPoint.x, endPoint.y);
 		}
 		else if (currentPointType == kCGPathElementAddLineToPoint)
@@ -61,6 +64,7 @@
 			CGPoint controlPoint1 = element->points[0];
 			CGPoint controlPoint2 = element->points[1];
 			CGPoint endPoint = element->points[2];
+
 			CGPathAddCurveToPoint(newPath, NULL,
 								  controlPoint1.x, controlPoint1.y,
 								  controlPoint2.x, controlPoint2.y,
@@ -68,6 +72,21 @@
 		}
 		else if (currentPointType == kCGPathElementCloseSubpath)
 		{
+			CGPoint beginPoint = CGPathGetCurrentPoint(newPath);
+			if ( ! CGPointEqualToPoint(firstPointOfSubpath, beginPoint))
+			{
+				// close subpath would add a visible line, add curve instead:
+				CGPoint endPoint   = firstPointOfSubpath;
+				CGPoint controlPoint1 = CGPointMake( beginPoint.x + (endPoint.x-beginPoint.x) * 1.0/3.0,
+													 beginPoint.y + (endPoint.y-beginPoint.y) * 1.0/3.0);
+				CGPoint controlPoint2 = CGPointMake( beginPoint.x + (endPoint.x-beginPoint.x) * 2.0/3.0,
+													 beginPoint.y + (endPoint.y-beginPoint.y) * 2.0/3.0);
+				
+				CGPathAddCurveToPoint(newPath, NULL,
+									  controlPoint1.x, controlPoint1.y,
+									  controlPoint2.x, controlPoint2.y,
+									  endPoint.x, endPoint.y);
+			}
 			CGPathCloseSubpath(newPath);
 		}
 		else
