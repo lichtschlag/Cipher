@@ -26,6 +26,7 @@
 		3F310BE7175A9FEA0093AF99 /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F310BE6175A9FEA0093AF99 /* iPhone.storyboard */; };
 		3F310BEE175AB75B0093AF99 /* CipherLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BED175AB75B0093AF99 /* CipherLayer.m */; };
 		3F310BF2175E47E30093AF99 /* UIBezierPath+PathMorphing.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */; };
+		3F41C66818BE473B0019CB08 /* CipherLayerQuartz.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F41C66718BE473B0019CB08 /* CipherLayerQuartz.m */; };
 		3FA2FCBF18AE67D600209EDC /* CipherDebugLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA2FCBE18AE67D600209EDC /* CipherDebugLayer.m */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,8 @@
 		3F310BED175AB75B0093AF99 /* CipherLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherLayer.m; sourceTree = "<group>"; };
 		3F310BF0175E47E30093AF99 /* UIBezierPath+PathMorphing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+PathMorphing.h"; sourceTree = "<group>"; };
 		3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+PathMorphing.m"; sourceTree = "<group>"; };
+		3F41C66618BE473B0019CB08 /* CipherLayerQuartz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherLayerQuartz.h; sourceTree = "<group>"; };
+		3F41C66718BE473B0019CB08 /* CipherLayerQuartz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherLayerQuartz.m; sourceTree = "<group>"; };
 		3FA2FCBD18AE67D600209EDC /* CipherDebugLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherDebugLayer.h; sourceTree = "<group>"; };
 		3FA2FCBE18AE67D600209EDC /* CipherDebugLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherDebugLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -144,6 +147,8 @@
 				3F310BD3175A9E480093AF99 /* CipherViewController.m */,
 				3F310BEC175AB75B0093AF99 /* CipherLayer.h */,
 				3F310BED175AB75B0093AF99 /* CipherLayer.m */,
+				3F41C66618BE473B0019CB08 /* CipherLayerQuartz.h */,
+				3F41C66718BE473B0019CB08 /* CipherLayerQuartz.m */,
 			);
 			name = "Main View";
 			path = Cipher;
@@ -248,6 +253,7 @@
 				3FA2FCBF18AE67D600209EDC /* CipherDebugLayer.m in Sources */,
 				3F310BD4175A9E480093AF99 /* CipherViewController.m in Sources */,
 				3F310BDB175A9E480093AF99 /* CipherDebugViewController.m in Sources */,
+				3F41C66818BE473B0019CB08 /* CipherLayerQuartz.m in Sources */,
 				3F310BEE175AB75B0093AF99 /* CipherLayer.m in Sources */,
 				3F310BF2175E47E30093AF99 /* UIBezierPath+PathMorphing.m in Sources */,
 			);
