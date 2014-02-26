@@ -95,7 +95,9 @@
 		}
 	}];
 	
-	return [UIBezierPath bezierPathWithCGPath:newPath];
+	UIBezierPath *result = [UIBezierPath bezierPathWithCGPath:newPath];
+	CGPathRelease(newPath);
+	return result;
 }
 
 
@@ -168,7 +170,9 @@
 	
 	free(points);
 	
-	return [UIBezierPath bezierPathWithCGPath:newPath];
+	UIBezierPath *result = [UIBezierPath bezierPathWithCGPath:newPath];
+	CGPathRelease(newPath);
+	return result;
 }
 
 
