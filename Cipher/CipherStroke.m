@@ -32,10 +32,7 @@
 	CFIndex count = CTTypesetterSuggestLineBreak(typesetter, start, containerBounds.size.width);
 	CTLineRef aLine = CTTypesetterCreateLine(typesetter, CFRangeMake(start, count));
 	start += count;
-	
-	// ?
-	//	UIGraphicsBeginImageContextWithOptions(containerBounds.size, YES, 0);
-	
+		
 	// this has always been a wonky computation
 	CGFloat descent;
 	CTLineGetTypographicBounds(aLine, NULL, &descent, NULL);
@@ -94,20 +91,7 @@
 				position.x = position.x + glyphPosition.x;
 				position.y = position.y + glyphPosition.y + lineY;
 				glyphModel.position = position;
-				
-				// create model object for this stroke
-				//				CipherStroke *glyphModel = [CipherStroke new];
-				//				glyphModel.stroke = clearTextPath;
-				////				glyphModel.anchorPoint = CGPointMake(0,0);
-				//				glyphModel.frame = currentGlyphBox;
-				//				glyphModel.bounds = currentGlyphBox;
-				//
-				//				glyphModel.position = CGPointMake(glyphLayer.position.x +glyphPosition.x,
-				//												  glyphLayer.position.y + glyphPosition.y +lineY);
-				//				glyphModel.strokeColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
-				//				glyphModel.lineWidth = 1.0f;
-				//				//				glyphLayer.lineJoin = kCALineJoinBevel;
-				
+								
 				[result addObject:glyphModel];
 			}
 		}
@@ -155,10 +139,6 @@
 	{
 		CGPathElementType currentPointType = element->type;
 
-		// do nothing on line ends
-		if (currentPointType == kCGPathElementCloseSubpath)
-			return;
-
 		// on the first point, compute the starting angle
 		if (isFirstPoint)
 		{
@@ -176,7 +156,13 @@
 		endPos.x = middlePos.x + sin(angle) * radius;
 		endPos.y = middlePos.y + cos(angle) * radius;
 		
-		if (currentPointType == kCGPathElementMoveToPoint)
+
+		// do nothing on line ends
+		if (currentPointType == kCGPathElementCloseSubpath)
+		{
+			[circularPath closePath];
+		}
+		else if (currentPointType == kCGPathElementMoveToPoint)
 		{
 			[circularPath moveToPoint:CGPointMake(endPos.x, endPos.y)];
 		}

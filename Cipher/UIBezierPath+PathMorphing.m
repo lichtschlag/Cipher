@@ -87,7 +87,7 @@
 									  controlPoint2.x, controlPoint2.y,
 									  endPoint.x, endPoint.y);
 			}
-			CGPathCloseSubpath(newPath);
+//			CGPathCloseSubpath(newPath);
 		}
 		else
 		{

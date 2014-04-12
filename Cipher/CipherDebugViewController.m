@@ -57,9 +57,6 @@ static const CGFloat kMarginHeight		=	40;
 
 	// debug row 1
 	UIBezierPath *startPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 100, 100)];
-//	[self boxGraphWithSize:CGSizeMake(100, 100)]; //
-//	[startPath logPathElements];
-//	[[UIBezierPath bezierPathByConvertingPathToCurves:startPath] logPathElements];
 	UIBezierPath *endPath = [startPath copy];
 	[endPath applyTransform:CGAffineTransformMakeRotation(M_PI_4)];
 	
@@ -92,10 +89,9 @@ static const CGFloat kMarginHeight		=	40;
 
 	// debug row 3
 	UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 100, 100)];
-	// TODO: ask why rotations by 90 degress do nothing
+
 	// On device---but not simulator---90 deg rotations will often default to no-op.
 	[circlePath applyTransform:CGAffineTransformMakeRotation(-1.999*M_PI_4)];
-//	[circlePath logPathElements];
 	
 	boxLayer = [CipherDebugLayer new];
 	boxLayer.debugPath = [UIBezierPath bezierPathByConvertingPathToCurves:startPath];
@@ -161,17 +157,12 @@ static const CGFloat kMarginHeight		=	40;
 	boxLayer.frame = CGRectMake(0, 500, 100, 100);
 	[self.textContainer addSublayer:boxLayer];
 	
-//	[oStroke.path logPathElements];
-//	NSLog(@"%s", __PRETTY_FUNCTION__);
-
 	oStroke.path = [UIBezierPath bezierPathByConvertingPathToCurves:oStroke.path];
-	
+
 	boxLayer = [CipherDebugLayer new];
 	boxLayer.debugPath = oStroke.path;
 	boxLayer.frame = CGRectMake(100, 500, 100, 100);
 	[self.textContainer addSublayer:boxLayer];
-	
-//	[boxLayer.debugPath logPathElements];
 	
 	boxLayer = [CipherDebugLayer new];
 	boxLayer.debugPath = [[oStroke circularCipher] path];
@@ -199,7 +190,29 @@ static const CGFloat kMarginHeight		=	40;
 	boxLayer.debugPath = [[eStroke circularCipher] path];
 	boxLayer.frame = CGRectMake(200, 600, 100, 100);
 	[self.textContainer addSublayer:boxLayer];
+	
+	// debug row 8 - o morph
+	for (int i = 0; i < count; i++)
+	{
+		boxLayer = [CipherDebugLayer new];
+		boxLayer.debugPath = [UIBezierPath bezierPathByMorphingFromPath:oStroke.path
+																 toPath:[oStroke circularCipher].path
+															   progress:(i+1) / (float)(count +1)];
+		boxLayer.frame = CGRectMake(i*100, 700, 100, 100);
+		[self.textContainer addSublayer:boxLayer];
+	}
 
+	
+	// debug row 9 - e morph
+	for (int i = 0; i < count; i++)
+	{
+		boxLayer = [CipherDebugLayer new];
+		boxLayer.debugPath = [UIBezierPath bezierPathByMorphingFromPath:eStroke.path
+																 toPath:[eStroke circularCipher].path
+															   progress:(i+1) / (float)(count +1)];
+		boxLayer.frame = CGRectMake(i*100, 800, 100, 100);
+		[self.textContainer addSublayer:boxLayer];
+	}
 }
 
 
@@ -215,7 +228,6 @@ static const CGFloat kMarginHeight		=	40;
 }
 
 
-
-
-
 @end
+
+
