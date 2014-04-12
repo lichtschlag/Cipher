@@ -176,6 +176,20 @@
 }
 
 
+- (UIBezierPath *) bezierPathByConvertingToCurves
+{
+	return [UIBezierPath bezierPathByConvertingPathToCurves:self];
+}
+
+
+- (UIBezierPath *) bezierPathByMorphingToPath:(UIBezierPath *)toPath progress:(float)p;
+{
+	return [UIBezierPath bezierPathByMorphingFromPath:self
+											   toPath:toPath
+											 progress:p];
+}
+
+
 - (NSUInteger) countOfPathElements;
 {
 	__block NSUInteger count = 0;
@@ -188,7 +202,6 @@
 }
 
 
-// TODO: Close might as well be visible
 - (NSUInteger) countOfVisiblePathElements;
 {
 	__block NSUInteger count = 0;

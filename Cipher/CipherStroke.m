@@ -129,22 +129,20 @@
 #pragma mark Conversion
 // ---------------------------------------------------------------------------------------------------------------
 
-- (CipherStroke *) cicularCipher
+- (CipherStroke *) circularCipher
 {
-	UIBezierPath *resultPath = [[UIBezierPath alloc] init];
+	UIBezierPath *circularPath = [[UIBezierPath alloc] init];
 
 	// morph into a cricle
-	NSInteger currentNumberOfElements = [self.path countOfPathElements];
-	__block NSInteger currentElementIndex = 0;
+	NSInteger numberOfElements = [self.path countOfVisiblePathElements];
+	__block NSInteger elementIndex = 0;
 	__block BOOL isFirstPoint = YES;
-	__block float startingAngle = 0;
+	__block float startingAngle = 0.0f;
 	
 	// compute position
-	CGPoint origin = self.frame.origin;
 	CGFloat radius = MIN(self.frame.size.width, self.frame.size.height) / 2.0;
-	CGPoint middlePos;
-	middlePos.x = origin.x + (self.frame.size.width / 2.0);
-	middlePos.y = origin.y + (self.frame.size.height / 2.0);
+	CGPoint middlePos = CGPointMake(CGRectGetMidX(self.frame),
+									CGRectGetMidY(self.frame));
 
 	[self.path enumeratePathElementsUsingBlock:^(const CGPathElement *element)
 	{
@@ -164,63 +162,38 @@
 			startingAngle = atan2(delta.x, delta.y);
 		}
 		
-		CGFloat angle = 2*M_PI * ((float)currentElementIndex  /
-								  (float)currentNumberOfElements) +startingAngle;
+		// all other points
+		CGFloat angle = 2*M_PI * ((float)elementIndex  /
+								  (float)numberOfElements) + startingAngle;
 		CGPoint endPos;
-		endPos.x = middlePos.x + sin(angle)* radius;
-		endPos.y = middlePos.y + cos(angle)* radius;
-		
-		
-		//	CGFloat beginAngle = 2*M_PI * (((float)currentElementIndex-1)  / (float)currentNumberOfElements) +startingAngle;
-		CGFloat halfAngle = 2*M_PI * (((float)currentElementIndex-0.5)  / (float)currentNumberOfElements) +startingAngle;
-		CGFloat deltaAngle =  2*M_PI * (1.0  / (float)currentNumberOfElements);
-		
-		//	CGPoint halfPos = CGPointMake(middlePos.x + sin(halfAngle)* radius, middlePos.y + cos(halfAngle)* radius);
-		
-		CGFloat Cradius = radius * sqrt(1+tan(deltaAngle/2.0)*tan(deltaAngle/2.0));
-		
-		CGPoint CPos = CGPointMake(middlePos.x + sin(halfAngle)* Cradius, middlePos.y + cos(halfAngle)* Cradius);
-		
-		//	point.y = point.y + currentGlyphBox.size.height * (1-(float)currentElementIndex  / (float)currentNumberOfElements);
-		//	CGPoint point = element->points[0];
+		endPos.x = middlePos.x + sin(angle) * radius;
+		endPos.y = middlePos.y + cos(angle) * radius;
 		
 		if (currentPointType == kCGPathElementMoveToPoint)
 		{
-			[resultPath moveToPoint:CGPointMake(endPos.x, endPos.y)];
-			//CGPathMoveToPoint(lineLetter, NULL, endPos.x, endPos.y);
+			[circularPath moveToPoint:CGPointMake(endPos.x, endPos.y)];
 		}
 		else
 		{
-			//		CGPathAddLineToPoint(lineLetter, NULL, endPos.x, endPos.y);
+			// http://en.wikipedia.org/wiki/B%C3%A9zier_spline#Approximating_circular_arcs
+			CGFloat halfAngle = 2*M_PI * (((float)elementIndex - 0.5)  /
+										  (float)numberOfElements) + startingAngle;
+			CGFloat deltaAngle =  2*M_PI * (1.0  / (float)numberOfElements);
 			
-			//		CGPoint beginPos =  CGPathGetCurrentPoint(lineLetter);
-			//		//		CGPathAddArc(lineLetter, NULL, middlePos.x, middlePos.y, radius, beginAngle, angle, YES);
-			//		//		CGPathAddRelativeArc(lineLetter, NULL, middlePos.x, middlePos.y, radius, angle, 2*M_PI * (1.0  / (float)currentNumberOfElements));
-			//		//		CGPoint halfPos = CGPointMake((beginPos.x + endPos.x) /2.0, (beginPos.y + endPos.y) /2.0);
-			//
-			//
-			//		// http://en.wikipedia.org/wiki/B%C3%A9zier_spline#Approximating_circular_arcs
-			////		CGFloat deltaAngle =  2*M_PI * (1.0  / (float)currentNumberOfElements);
-			//		CGPoint A = CGPointMake(radius * cos(deltaAngle/2.0f), radius * sin(deltaAngle/2.0f));
-			//		CGPoint B = CGPointMake(A.x, -A.y);
-			//
-			//		CGPoint Aprime = CGPointMake( (4.0f-A.x)/3.0f,  (1.0f-A.x)*(3.0f-A.x)/(3.0f*A.y) );
-			//		CGPoint Bprime = CGPointMake( Aprime.x, -Aprime.y);
-			//
-			//		CGAffineTransform rotation = CGAffineTransformMakeRotation(angle - deltaAngle/2.0f);
-			//		//		CGPathAddCurveToPoint(lineLetter, &rotation, Aprime.x, Aprime.y, Bprime.x, Bprime.y, B.x, B.y);
+			CGFloat Cradius = radius * sqrt(1 + tan(deltaAngle/2.0)*tan(deltaAngle/2.0));
 			
+			CGPoint CPos = CGPointMake(middlePos.x + sin(halfAngle) * Cradius,
+									   middlePos.y + cos(halfAngle) * Cradius);
 			
-			[resultPath addQuadCurveToPoint:CGPointMake(CPos.x, CPos.y)
-							   controlPoint:CGPointMake(endPos.x, endPos.y)];
-			// CGPathAddQuadCurveToPoint(lineLetter, NULL, CPos.x, CPos.y, endPos.x, endPos.y);
+			[circularPath addQuadCurveToPoint:CGPointMake(endPos.x, endPos.y)
+							   controlPoint:CGPointMake(CPos.x, CPos.y)];
 		}
-		currentElementIndex ++;
+		elementIndex ++;
 	}];
 
 	// create model object
 	CipherStroke *resultStroke = [CipherStroke new];
-	resultStroke.path = resultPath;
+	resultStroke.path = [circularPath bezierPathByConvertingToCurves];
 	resultStroke.frame = self.frame;
 	
 	return resultStroke;

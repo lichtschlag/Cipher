@@ -16,6 +16,10 @@
 + (UIBezierPath *) bezierPathByConvertingPathToCurves:(UIBezierPath *)basePath;
 + (UIBezierPath *) bezierPathByMorphingFromPath:(UIBezierPath *)fromPath toPath:(UIBezierPath *)toPath progress:(float)p;
 
+- (UIBezierPath *) bezierPathByConvertingToCurves;
+- (UIBezierPath *) bezierPathByMorphingToPath:(UIBezierPath *)toPath progress:(float)p;
+
+
 - (void) logPathElements;
 
 - (NSUInteger) countOfPathElements;

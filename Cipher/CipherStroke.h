@@ -20,7 +20,7 @@
 					  inBounds:(CGRect)containerBounds
 					   options:(int)perLinePerCharacterOrAsOne;
 
-- (CipherStroke *) cicularCipher;
+- (CipherStroke *) circularCipher;
 
 
 @end

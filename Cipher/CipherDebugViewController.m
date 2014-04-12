@@ -112,6 +112,14 @@ static const CGFloat kMarginHeight		=	40;
 	boxLayer.frame = CGRectMake( 200, 200, 100, 100);
 	[self.textContainer addSublayer:boxLayer];
 
+	CipherStroke *aStroke = [[CipherStroke alloc] init];
+	aStroke.path = [UIBezierPath bezierPathByConvertingPathToCurves:circlePath];
+	aStroke.frame = aStroke.path.bounds;
+	boxLayer = [CipherDebugLayer new];
+	boxLayer.debugPath = [[aStroke circularCipher] path];
+	boxLayer.frame = CGRectMake( 300, 200, 100, 100);
+	[self.textContainer addSublayer:boxLayer];
+
 	// debug row 4
 	count = 6;
 	for (int i = 0; i < count; i++)
@@ -137,7 +145,7 @@ static const CGFloat kMarginHeight		=	40;
 	}
 	
 	
-	// debug row 6 --- e character
+	// debug row 6 --- o character
 	CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)@"Helvetica", 300, NULL);
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
                            (id)CFBridgingRelease(font), kCTFontAttributeName,
@@ -147,11 +155,7 @@ static const CGFloat kMarginHeight		=	40;
 																			   attributes:attrs];
 	CipherStroke *oStroke = [[CipherStroke strokesForString:string
 												   inBounds:CGRectMake(0, 0, 100, 100)
-													options:0] lastObject];
-//	CipherStroke *eStroke = [[CipherStroke strokesForString:string
-//										inBounds:CGRectMake(0, 0, 100, 100)
-//										 options:0] lastObject];
-
+													options:0] firstObject];
 	boxLayer = [CipherDebugLayer new];
 	boxLayer.debugPath = oStroke.path;
 	boxLayer.frame = CGRectMake(0, 500, 100, 100);
@@ -170,8 +174,30 @@ static const CGFloat kMarginHeight		=	40;
 //	[boxLayer.debugPath logPathElements];
 	
 	boxLayer = [CipherDebugLayer new];
-	boxLayer.debugPath = [[oStroke cicularCipher] path];
+	boxLayer.debugPath = [[oStroke circularCipher] path];
 	boxLayer.frame = CGRectMake(200, 500, 100, 100);
+	[self.textContainer addSublayer:boxLayer];
+	
+	
+	// debug row 7 --- e character
+	CipherStroke *eStroke = [[CipherStroke strokesForString:string
+										inBounds:CGRectMake(0, 0, 100, 100)
+										 options:0] lastObject];
+	boxLayer = [CipherDebugLayer new];
+	boxLayer.debugPath = eStroke.path;
+	boxLayer.frame = CGRectMake(0, 600, 100, 100);
+	[self.textContainer addSublayer:boxLayer];
+	
+	eStroke.path = [UIBezierPath bezierPathByConvertingPathToCurves:eStroke.path];
+	
+	boxLayer = [CipherDebugLayer new];
+	boxLayer.debugPath = eStroke.path;
+	boxLayer.frame = CGRectMake(100, 600, 100, 100);
+	[self.textContainer addSublayer:boxLayer];
+		
+	boxLayer = [CipherDebugLayer new];
+	boxLayer.debugPath = [[eStroke circularCipher] path];
+	boxLayer.frame = CGRectMake(200, 600, 100, 100);
 	[self.textContainer addSublayer:boxLayer];
 
 }
