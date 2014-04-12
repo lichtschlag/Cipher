@@ -39,7 +39,9 @@
 	// this has always been a wonky computation
 	CGFloat descent;
 	CTLineGetTypographicBounds(aLine, NULL, &descent, NULL);
-	//	CGFloat lineY = containerBounds.size.height - self.fontSize + descent;
+	CTFontRef font = (__bridge CTFontRef)([inputString attributesAtIndex:0 effectiveRange:NULL][NSFontAttributeName]);
+	NSUInteger textFontSize = CTFontGetSize(font);
+	CGFloat lineY = containerBounds.size.height - textFontSize + descent;
 	
 	
 	
@@ -85,8 +87,13 @@
 				
 				// create model
 				CipherStroke *glyphModel = [[CipherStroke alloc] init];
-				glyphModel.path = clearTextPath;
+				glyphModel.path = [clearTextPath bezierPathByConvertingToCurves];
 				glyphModel.frame = CGPathGetBoundingBox(lettersOutlinePath);
+				
+				CGPoint position = glyphModel.frame.origin;
+				position.x = position.x + glyphPosition.x;
+				position.y = position.y + glyphPosition.y + lineY;
+				glyphModel.position = position;
 				
 				// create model object for this stroke
 				//				CipherStroke *glyphModel = [CipherStroke new];
@@ -116,7 +123,7 @@
 		aLine = CTTypesetterCreateLine(typesetter, CFRangeMake(start, count));
 		start += count;
 		
-		//		lineY = lineY - self.fontSize - 2;
+		lineY = lineY - textFontSize - 2;
 	}
 	
 	
@@ -200,6 +207,6 @@
 }
 
 
-
-
 @end
+
+

@@ -15,6 +15,7 @@
 
 @property (strong) UIBezierPath *path;
 @property (assign) CGRect frame;
+@property (assign) CGPoint position;
 
 + (NSArray *) strokesForString:(NSAttributedString *)inputString
 					  inBounds:(CGRect)containerBounds

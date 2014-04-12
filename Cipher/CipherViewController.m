@@ -9,7 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <CoreText/CoreText.h>
 #import "CipherViewController.h"
-//#import "CipherLayer.h"
+#import "CipherStroke.h"
 #import "CipherLayerQuartz.h"
 
 
@@ -27,11 +27,11 @@
 @implementation CipherViewController
 // ===============================================================================================================
 
-static NSUInteger currentNumberOfElements	= 0;
-static NSUInteger currentElementIndex		= 0;
-static CGRect     currentGlyphBox;
-static BOOL		  isFirstPoint = YES;
-static CGFloat    startingAngle = 0;
+//static NSUInteger currentNumberOfElements	= 0;
+//static NSUInteger currentElementIndex		= 0;
+//static CGRect     currentGlyphBox;
+//static BOOL		  isFirstPoint = YES;
+//static CGFloat    startingAngle = 0;
 
 static const CGFloat kMarginWidth		=	80;
 static const CGFloat kMarginHeight		=	40;
@@ -91,244 +91,29 @@ static const CGFloat kMaxRevealDistance	=  100;
 
     // layout text in the frame of our text container
 	
-	// Create a typesetter using the attributed string.
-	CTTypesetterRef typesetter = CTTypesetterCreateWithAttributedString((__bridge CFAttributedStringRef)(attrString));
+	NSArray *glyphStrokes = [CipherStroke strokesForString:attrString
+												  inBounds:self.textContainer.bounds
+												   options:0];
 
-	// Find a break for line from the beginning of the string to the given width.
-	CFIndex start = 0;
-	
-	// Use the returned character count (to the break) to create the line.
-	CFIndex count = CTTypesetterSuggestLineBreak(typesetter, start, self.textContainer.bounds.size.width);
-	CTLineRef aLine = CTTypesetterCreateLine(typesetter, CFRangeMake(start, count));
-	start += count;
-
-	UIGraphicsBeginImageContextWithOptions(self.textContainer.bounds.size, YES, 0);
-	
-	CGFloat descent;
-	CTLineGetTypographicBounds(aLine, NULL, &descent, NULL);
-	CGFloat lineY = self.textContainer.bounds.size.height - self.fontSize + descent;
-	
-	while (CTLineGetStringRange(aLine).length != 0)
+	for (CipherStroke *aStroke in glyphStrokes)
 	{
-		//					DO SOMETHING WITH THE LINE
-		// ------------------------------------------------------------------------------------------------------------
-		
-		CFArrayRef runArray = CTLineGetGlyphRuns(aLine);
+		// create layer from our model
+		// cipher strokes are always canonical
+		CipherLayerQuartz *aLayer = [[CipherLayerQuartz alloc] init];
+		aLayer.clearTextPath = aStroke.path;
+		aLayer.cipherTextPath = [aStroke circularCipher].path;
+		aLayer.anchorPoint = CGPointMake(0,0);
+		aLayer.frame = aStroke.frame;
+		aLayer.bounds = aStroke.frame;
+		aLayer.position = aStroke.position;
 
-		// for each RUN
-		for (CFIndex runIndex = 0; runIndex < CFArrayGetCount(runArray); runIndex++)
-		{
-			// Get FONT for this run
-			CTRunRef aRun = (CTRunRef)CFArrayGetValueAtIndex(runArray, runIndex);
-			CTFontRef runFont = CFDictionaryGetValue(CTRunGetAttributes(aRun), kCTFontAttributeName);
-			
-			// for each GLYPH in run
-			for (CFIndex runGlyphIndex = 0; runGlyphIndex < CTRunGetGlyphCount(aRun); runGlyphIndex++)
-			{
-				// DO SOMETHING WITH THE GLYPH
-				
-				// Create path from text
-				CGMutablePathRef lettersOutlinePath = CGPathCreateMutable();
-				CGMutablePathRef straightLettersPath = CGPathCreateMutable();
-				
-				
-				// get Glyph & Glyph-data
-				CFRange thisGlyphRange = CFRangeMake(runGlyphIndex, 1);
-				CGGlyph glyph;
-				CGPoint glyphPosition;
-				CTRunGetGlyphs(aRun, thisGlyphRange, &glyph);
-				CTRunGetPositions(aRun, thisGlyphRange, &glyphPosition);
-				
-				// Get normal PATH of the letters
-				CGPathRef letterOutlinePath = CTFontCreatePathForGlyph(runFont, glyph, NULL);
-//				CGAffineTransform letterTranslation = CGAffineTransformMakeTranslation(position.x, position.y);
-				CGPathAddPath(lettersOutlinePath, NULL, letterOutlinePath);
-				
-				// Get PATH of mophed letters
-				CGPathRef straightLetter = CGPathCreateMutable();
-				NSUInteger numberOfElementsInPath = 0;
-				CGPathApply(letterOutlinePath, (void *)&numberOfElementsInPath, CGPathElementsCount);
-				currentNumberOfElements = numberOfElementsInPath;
-				currentElementIndex = 0;
-				currentGlyphBox = CGPathGetBoundingBox(letterOutlinePath);
-				isFirstPoint = YES;
-				startingAngle = 0;
-				CGPathApply(letterOutlinePath, (void *)straightLetter, CGPathMorphToCircles);
-				numberOfElementsInPath = 0;
-				CGPathApply(straightLetter, (void *)&numberOfElementsInPath, CGPathElementsCount);
-				
-//				NSLog(@"%s %@", __PRETTY_FUNCTION__,(NSString *) NSStringFromCGRect(currentGlyphBox));
-
-				CGPathAddPath(straightLettersPath, NULL, straightLetter);
-				
-				// cleanup
-				CGPathRelease(letterOutlinePath);
-				CGPathRelease(straightLetter);
-				
-				
-				
-				UIBezierPath *clearTextPath = [UIBezierPath bezierPath];
-				[clearTextPath moveToPoint:CGPointZero];
-				[clearTextPath appendPath:[UIBezierPath bezierPathWithCGPath:lettersOutlinePath]];
-				
-				UIBezierPath *cipherTextPath = [UIBezierPath bezierPath];
-				[cipherTextPath moveToPoint:CGPointZero];
-				[cipherTextPath appendPath:[UIBezierPath bezierPathWithCGPath:straightLettersPath]];
-				
-				CGPathRelease(lettersOutlinePath);
-				CGPathRelease(straightLettersPath);
-
-				
-				// create visuals for this glyph
-				
-//				CipherLayer *glyphLayer = [CipherLayer layer];
-				CipherLayerQuartz *glyphLayer = [CipherLayerQuartz layer];
-				glyphLayer.clearTextPath = clearTextPath;
-				glyphLayer.cipherTextPath = cipherTextPath;
-				[glyphLayer prep];
-				 
-				glyphLayer.anchorPoint = CGPointMake(0,0);
-				
-				glyphLayer.frame = currentGlyphBox;
-				glyphLayer.bounds = currentGlyphBox;
-				glyphLayer.position = CGPointMake(glyphLayer.position.x +glyphPosition.x, glyphLayer.position.y + glyphPosition.y +lineY);
-//				glyphLayer.backgroundColor = [[UIColor colorWithRed:1.000 green:1.000 blue:0.000 alpha:1.00] CGColor];
-				
-//				glyphLayer.fillColor = [[UIColor colorWithRed:0.854 green:0.272 blue:0.071 alpha:1.000] CGColor];
-				glyphLayer.fillColor = nil;
-				
-				glyphLayer.strokeColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
-				glyphLayer.lineWidth = 1.0f;
-//				glyphLayer.lineJoin = kCALineJoinBevel;
-				
-				[self.textContainer addSublayer:glyphLayer];
-			}
-		}
+		aLayer.strokeColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
+		aLayer.lineWidth = 1.0f;
 		
-		// -----------------------------------------------------------------------------------------------------------------
+		[aLayer prep];
 		
-		// get metrics for the next line
-		count = CTTypesetterSuggestLineBreak(typesetter, start, self.textContainer.bounds.size.width);
-		CFRelease(aLine);
-		aLine = CTTypesetterCreateLine(typesetter, CFRangeMake(start, count));
-		start += count;
-
-		lineY = lineY - self.fontSize - 2;
-		
-//		NSLog(@"%s %f", __PRETTY_FUNCTION__, CTFontGetLeading(font));
+		[self.textContainer addSublayer:aLayer];
 	}
-//	CFRelease(font);
-	CFRelease(typesetter);
-	CFRelease(aLine);
-}
-
-
-// -----------------------------------------------------------------------------------------------------------------
-#pragma mark -
-#pragma mark Path Functions
-// -----------------------------------------------------------------------------------------------------------------
-
-void CGPathElementsCount(void *info, const CGPathElement *element)
-{
-	NSUInteger *numberOfElementsSoFar = (NSUInteger *)info;
-	CGPathElementType currentPointType = element->type;
-	
-	if (currentPointType != kCGPathElementCloseSubpath)
-		(*numberOfElementsSoFar)++;
-}
-
-
-void CGPathElementsLog(void *info, const CGPathElement *element)
-{
-	CGPathElementType currentPointType = element->type;
-	
-	NSString *output =	(currentPointType == kCGPathElementMoveToPoint)			? @"kCGPathElementMoveToPoint" :
-						(currentPointType == kCGPathElementAddLineToPoint)		? @"kCGPathElementAddLineToPoint" :
-						(currentPointType == kCGPathElementAddQuadCurveToPoint) ? @"kCGPathElementAddQuadCurveToPoint" :
-						(currentPointType == kCGPathElementAddCurveToPoint)		? @"kCGPathElementAddCurveToPoint" :
-						(currentPointType == kCGPathElementCloseSubpath)		? @"kCGPathElementCloseSubpath" :
-						@"unknown type";
-	NSLog(@"%@", output);
-}
-
-
-void CGPathMorphToCircles(void *info, const CGPathElement *element)
-{
-	CGMutablePathRef lineLetter = info;
-	
-	CGPathElementType currentPointType = element->type;
-	if (currentPointType == kCGPathElementCloseSubpath)
-	{
-		//CGPathCloseSubpath(lineLetter);
-		return;
-	}
-	
-	// compute position
-	CGPoint origin = currentGlyphBox.origin;
-	CGFloat radius = MIN(currentGlyphBox.size.width, currentGlyphBox.size.height) / 2.0;
-	CGPoint middlePos;
-	middlePos.x = origin.x + (currentGlyphBox.size.width / 2.0);
-	middlePos.y = origin.y + (currentGlyphBox.size.height / 2.0);
-	
-	
-	if (isFirstPoint)
-	{
-		isFirstPoint = NO;
-		// compute the starting angle
-		CGPoint originalPoint = element->points[0];
-		CGPoint delta = CGPointMake(originalPoint.x - middlePos.x,
-									originalPoint.y - middlePos.y);
-		startingAngle = atan2(delta.x, delta.y);
-	}
-	
-	CGFloat angle = 2*M_PI * ((float)currentElementIndex  / (float)currentNumberOfElements) +startingAngle;
-	CGPoint endPos;
-	endPos.x = middlePos.x + sin(angle)* radius;
-	endPos.y = middlePos.y + cos(angle)* radius;
-	
-	
-//	CGFloat beginAngle = 2*M_PI * (((float)currentElementIndex-1)  / (float)currentNumberOfElements) +startingAngle;
-	CGFloat halfAngle = 2*M_PI * (((float)currentElementIndex-0.5)  / (float)currentNumberOfElements) +startingAngle;
-	CGFloat deltaAngle =  2*M_PI * (1.0  / (float)currentNumberOfElements);
-	
-//	CGPoint halfPos = CGPointMake(middlePos.x + sin(halfAngle)* radius, middlePos.y + cos(halfAngle)* radius);
-	
-	CGFloat Cradius = radius * sqrt(1+tan(deltaAngle/2.0)*tan(deltaAngle/2.0));
-	
-	CGPoint CPos = CGPointMake(middlePos.x + sin(halfAngle)* Cradius, middlePos.y + cos(halfAngle)* Cradius);
-	
-	//	point.y = point.y + currentGlyphBox.size.height * (1-(float)currentElementIndex  / (float)currentNumberOfElements);
-	//	CGPoint point = element->points[0];
-	
-	if (currentPointType == kCGPathElementMoveToPoint)
-	{
-		CGPathMoveToPoint(lineLetter, NULL, endPos.x, endPos.y);
-	}
-	else
-	{
-//		CGPathAddLineToPoint(lineLetter, NULL, endPos.x, endPos.y);
-
-//		CGPoint beginPos =  CGPathGetCurrentPoint(lineLetter);
-//		//		CGPathAddArc(lineLetter, NULL, middlePos.x, middlePos.y, radius, beginAngle, angle, YES);
-//		//		CGPathAddRelativeArc(lineLetter, NULL, middlePos.x, middlePos.y, radius, angle, 2*M_PI * (1.0  / (float)currentNumberOfElements));
-//		//		CGPoint halfPos = CGPointMake((beginPos.x + endPos.x) /2.0, (beginPos.y + endPos.y) /2.0);
-//		
-//		
-//		// http://en.wikipedia.org/wiki/B%C3%A9zier_spline#Approximating_circular_arcs
-////		CGFloat deltaAngle =  2*M_PI * (1.0  / (float)currentNumberOfElements);
-//		CGPoint A = CGPointMake(radius * cos(deltaAngle/2.0f), radius * sin(deltaAngle/2.0f));
-//		CGPoint B = CGPointMake(A.x, -A.y);
-//		
-//		CGPoint Aprime = CGPointMake( (4.0f-A.x)/3.0f,  (1.0f-A.x)*(3.0f-A.x)/(3.0f*A.y) );
-//		CGPoint Bprime = CGPointMake( Aprime.x, -Aprime.y);
-//		
-//		CGAffineTransform rotation = CGAffineTransformMakeRotation(angle - deltaAngle/2.0f);
-//		//		CGPathAddCurveToPoint(lineLetter, &rotation, Aprime.x, Aprime.y, Bprime.x, Bprime.y, B.x, B.y);
-		
-		
-		CGPathAddQuadCurveToPoint(lineLetter, NULL, CPos.x, CPos.y, endPos.x, endPos.y);
-	}
-	currentElementIndex ++;
 }
 
 
