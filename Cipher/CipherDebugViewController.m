@@ -8,6 +8,8 @@
 
 #import "CipherDebugViewController.h"
 #import "CipherDebugLayer.h"
+#import <CoreText/CoreText.h>
+#import "CipherStroke.h"
 
 
 // ===============================================================================================================
@@ -133,6 +135,45 @@ static const CGFloat kMarginHeight		=	40;
 		boxLayer.frame = CGRectMake(i*100, 400, 100, 100);
 		[self.textContainer addSublayer:boxLayer];
 	}
+	
+	
+	// debug row 6 --- e character
+	CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)@"Helvetica", 300, NULL);
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                           (id)CFBridgingRelease(font), kCTFontAttributeName,
+                           nil];
+
+	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"oe"
+																			   attributes:attrs];
+	CipherStroke *oStroke = [[CipherStroke strokesForString:string
+												   inBounds:CGRectMake(0, 0, 100, 100)
+													options:0] lastObject];
+//	CipherStroke *eStroke = [[CipherStroke strokesForString:string
+//										inBounds:CGRectMake(0, 0, 100, 100)
+//										 options:0] lastObject];
+
+	boxLayer = [CipherDebugLayer new];
+	boxLayer.debugPath = oStroke.path;
+	boxLayer.frame = CGRectMake(0, 500, 100, 100);
+	[self.textContainer addSublayer:boxLayer];
+	
+//	[oStroke.path logPathElements];
+//	NSLog(@"%s", __PRETTY_FUNCTION__);
+
+	oStroke.path = [UIBezierPath bezierPathByConvertingPathToCurves:oStroke.path];
+	
+	boxLayer = [CipherDebugLayer new];
+	boxLayer.debugPath = oStroke.path;
+	boxLayer.frame = CGRectMake(100, 500, 100, 100);
+	[self.textContainer addSublayer:boxLayer];
+	
+//	[boxLayer.debugPath logPathElements];
+	
+	boxLayer = [CipherDebugLayer new];
+	boxLayer.debugPath = [[oStroke cicularCipher] path];
+	boxLayer.frame = CGRectMake(200, 500, 100, 100);
+	[self.textContainer addSublayer:boxLayer];
+
 }
 
 
@@ -146,6 +187,9 @@ static const CGFloat kMarginHeight		=	40;
 	[boxGraph closePath];
 	return boxGraph;
 }
+
+
+
 
 
 @end

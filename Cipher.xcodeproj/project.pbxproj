@@ -27,7 +27,9 @@
 		3F310BEE175AB75B0093AF99 /* CipherLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BED175AB75B0093AF99 /* CipherLayer.m */; };
 		3F310BF2175E47E30093AF99 /* UIBezierPath+PathMorphing.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */; };
 		3F41C66818BE473B0019CB08 /* CipherLayerQuartz.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F41C66718BE473B0019CB08 /* CipherLayerQuartz.m */; };
+		3F41C66C18BE5DFE0019CB08 /* CipherLayerGL.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F41C66A18BE5DAF0019CB08 /* CipherLayerGL.m */; };
 		3FA2FCBF18AE67D600209EDC /* CipherDebugLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA2FCBE18AE67D600209EDC /* CipherDebugLayer.m */; };
+		3FD8E41118F99FBD00B65DBD /* CipherStroke.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD8E41018F99FBD00B65DBD /* CipherStroke.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,8 +62,12 @@
 		3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+PathMorphing.m"; sourceTree = "<group>"; };
 		3F41C66618BE473B0019CB08 /* CipherLayerQuartz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherLayerQuartz.h; sourceTree = "<group>"; };
 		3F41C66718BE473B0019CB08 /* CipherLayerQuartz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherLayerQuartz.m; sourceTree = "<group>"; };
+		3F41C66918BE5DAF0019CB08 /* CipherLayerGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherLayerGL.h; sourceTree = "<group>"; };
+		3F41C66A18BE5DAF0019CB08 /* CipherLayerGL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherLayerGL.m; sourceTree = "<group>"; };
 		3FA2FCBD18AE67D600209EDC /* CipherDebugLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherDebugLayer.h; sourceTree = "<group>"; };
 		3FA2FCBE18AE67D600209EDC /* CipherDebugLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherDebugLayer.m; sourceTree = "<group>"; };
+		3FD8E40F18F99FBD00B65DBD /* CipherStroke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherStroke.h; sourceTree = "<group>"; };
+		3FD8E41018F99FBD00B65DBD /* CipherStroke.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherStroke.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +90,7 @@
 				3F310BBD175A9E480093AF99 /* App Core */,
 				3F310BE5175A9EC50093AF99 /* Main View */,
 				3FA2FCBC18AE67BC00209EDC /* Debug */,
+				3FD8E41218F99FC400B65DBD /* Model */,
 				3F310BEF175E47B30093AF99 /* UIBezierPath Categories */,
 				3F310BBE175A9E480093AF99 /* Resources */,
 				3F310BB6175A9E480093AF99 /* Frameworks */,
@@ -149,6 +156,8 @@
 				3F310BED175AB75B0093AF99 /* CipherLayer.m */,
 				3F41C66618BE473B0019CB08 /* CipherLayerQuartz.h */,
 				3F41C66718BE473B0019CB08 /* CipherLayerQuartz.m */,
+				3F41C66918BE5DAF0019CB08 /* CipherLayerGL.h */,
+				3F41C66A18BE5DAF0019CB08 /* CipherLayerGL.m */,
 			);
 			name = "Main View";
 			path = Cipher;
@@ -173,6 +182,16 @@
 				3FA2FCBE18AE67D600209EDC /* CipherDebugLayer.m */,
 			);
 			name = Debug;
+			path = Cipher;
+			sourceTree = "<group>";
+		};
+		3FD8E41218F99FC400B65DBD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3FD8E40F18F99FBD00B65DBD /* CipherStroke.h */,
+				3FD8E41018F99FBD00B65DBD /* CipherStroke.m */,
+			);
+			name = Model;
 			path = Cipher;
 			sourceTree = "<group>";
 		};
@@ -250,7 +269,9 @@
 			files = (
 				3F310BC4175A9E480093AF99 /* main.m in Sources */,
 				3F310BC8175A9E480093AF99 /* CipherAppDelegate.m in Sources */,
+				3F41C66C18BE5DFE0019CB08 /* CipherLayerGL.m in Sources */,
 				3FA2FCBF18AE67D600209EDC /* CipherDebugLayer.m in Sources */,
+				3FD8E41118F99FBD00B65DBD /* CipherStroke.m in Sources */,
 				3F310BD4175A9E480093AF99 /* CipherViewController.m in Sources */,
 				3F310BDB175A9E480093AF99 /* CipherDebugViewController.m in Sources */,
 				3F41C66818BE473B0019CB08 /* CipherLayerQuartz.m in Sources */,
