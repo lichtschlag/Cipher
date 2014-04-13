@@ -11,6 +11,7 @@
 #import "CipherViewController.h"
 #import "CipherStroke.h"
 #import "CipherLayerQuartz.h"
+#import "CipherLayer.h"
 
 
 // ===============================================================================================================
@@ -99,7 +100,8 @@ static const CGFloat kMaxRevealDistance	=  100;
 	{
 		// create layer from our model
 		// cipher strokes are always canonical
-		CipherLayerQuartz *aLayer = [[CipherLayerQuartz alloc] init];
+//		CipherLayerQuartz *aLayer = [[CipherLayerQuartz alloc] init];
+		CipherLayer *aLayer = [[CipherLayer alloc] init];
 		aLayer.clearTextPath = aStroke.path;
 		aLayer.cipherTextPath = [aStroke circularCipher].path;
 		aLayer.anchorPoint = CGPointMake(0,0);
@@ -107,8 +109,18 @@ static const CGFloat kMaxRevealDistance	=  100;
 		aLayer.bounds = aStroke.frame;
 		aLayer.position = aStroke.position;
 
-		aLayer.strokeColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
-		aLayer.lineWidth = 1.0f;
+		aLayer.clearColor = [UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000];
+//		aLayer.clearColor = nil;
+//		aLayer.fillColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
+//		aLayer.fillColor = nil;
+		aLayer.lineWidth = 2.0f;
+		
+		// line cap square would be preferable, but invisible line fragments can produce noise
+		aLayer.lineCap = kCALineCapButt;
+		
+		// a lower value redices artifacts during morphs, e.g. Helvetica 'a'
+		aLayer.miterLimit = 5.0f;
+//		aLayer.lineJoin  = kCALineJoinBevel;
 		
 		[aLayer prep];
 		
@@ -190,8 +202,8 @@ static const CGFloat kMaxRevealDistance	=  100;
 		
 		aTouchLocation = [self.view.layer convertPoint:aTouchLocation toLayer:self.textContainer];
 		
-		for (CipherLayerQuartz *aGlyphLayer in self.textContainer.sublayers)
-//		for (CipherLayer *aGlyphLayer in self.textContainer.sublayers)
+//		for (CipherLayerQuartz *aGlyphLayer in self.textContainer.sublayers)
+		for (CipherLayer *aGlyphLayer in self.textContainer.sublayers)
 		{
 //			int chance = arc4random() % 100;
 //			if (chance < 75)

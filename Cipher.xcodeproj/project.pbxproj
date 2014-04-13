@@ -30,6 +30,7 @@
 		3F41C66C18BE5DFE0019CB08 /* CipherLayerGL.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F41C66A18BE5DAF0019CB08 /* CipherLayerGL.m */; };
 		3FA2FCBF18AE67D600209EDC /* CipherDebugLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA2FCBE18AE67D600209EDC /* CipherDebugLayer.m */; };
 		3FD8E41118F99FBD00B65DBD /* CipherStroke.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD8E41018F99FBD00B65DBD /* CipherStroke.m */; };
+		3FD8E41518FA039F00B65DBD /* UIColor+ColorModifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD8E41418FA039F00B65DBD /* UIColor+ColorModifications.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,8 @@
 		3FA2FCBE18AE67D600209EDC /* CipherDebugLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherDebugLayer.m; sourceTree = "<group>"; };
 		3FD8E40F18F99FBD00B65DBD /* CipherStroke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherStroke.h; sourceTree = "<group>"; };
 		3FD8E41018F99FBD00B65DBD /* CipherStroke.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherStroke.m; sourceTree = "<group>"; };
+		3FD8E41318FA039F00B65DBD /* UIColor+ColorModifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ColorModifications.h"; sourceTree = "<group>"; };
+		3FD8E41418FA039F00B65DBD /* UIColor+ColorModifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ColorModifications.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +94,7 @@
 				3F310BE5175A9EC50093AF99 /* Main View */,
 				3FA2FCBC18AE67BC00209EDC /* Debug */,
 				3FD8E41218F99FC400B65DBD /* Model */,
-				3F310BEF175E47B30093AF99 /* UIBezierPath Categories */,
+				3F310BEF175E47B30093AF99 /* Categories */,
 				3F310BBE175A9E480093AF99 /* Resources */,
 				3F310BB6175A9E480093AF99 /* Frameworks */,
 				3F310BB5175A9E480093AF99 /* Products */,
@@ -163,13 +166,15 @@
 			path = Cipher;
 			sourceTree = "<group>";
 		};
-		3F310BEF175E47B30093AF99 /* UIBezierPath Categories */ = {
+		3F310BEF175E47B30093AF99 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
 				3F310BF0175E47E30093AF99 /* UIBezierPath+PathMorphing.h */,
 				3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */,
+				3FD8E41318FA039F00B65DBD /* UIColor+ColorModifications.h */,
+				3FD8E41418FA039F00B65DBD /* UIColor+ColorModifications.m */,
 			);
-			name = "UIBezierPath Categories";
+			name = Categories;
 			path = Cipher;
 			sourceTree = "<group>";
 		};
@@ -277,6 +282,7 @@
 				3F41C66818BE473B0019CB08 /* CipherLayerQuartz.m in Sources */,
 				3F310BEE175AB75B0093AF99 /* CipherLayer.m in Sources */,
 				3F310BF2175E47E30093AF99 /* UIBezierPath+PathMorphing.m in Sources */,
+				3FD8E41518FA039F00B65DBD /* UIColor+ColorModifications.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

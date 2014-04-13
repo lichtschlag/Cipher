@@ -16,6 +16,7 @@
 @property (strong) UIBezierPath *clearTextPath;
 @property (strong) UIBezierPath *cipherTextPath;
 @property (nonatomic) CGFloat degreeOfCipher;
+@property (strong) UIColor *clearColor;
 
 - (void) prep;
 

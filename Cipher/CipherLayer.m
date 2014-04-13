@@ -53,6 +53,8 @@ NSString *const kMorphAnimationKey      = @"kMorphAnimationKey";
 	self.prototypeAnimation.toValue = (id)(self.cipherTextPath.CGPath);
 
 	self.backgroundColor = [UIColor whiteColor].CGColor;
+	self.strokeColor = [self.clearColor colorWithSaturationMultiplier:0.5].CGColor;
+	self.fillColor = [self.clearColor colorWithSaturationMultiplier:0.5].CGColor;
 	self.opaque = YES;
 	
 	self.path = self.cipherTextPath.CGPath;
@@ -87,6 +89,11 @@ NSString *const kMorphAnimationKey      = @"kMorphAnimationKey";
 	{
 		self.path = [UIBezierPath bezierPathByMorphingFromPath:self.clearTextPath toPath:self.cipherTextPath progress:_degreeOfCipher].CGPath;
 	}
+	
+	UIColor *dimmedColor = [self.clearColor colorWithSaturationMultiplier:(1.0 - degreeOfCipher *0.5)];
+	
+	self.strokeColor = dimmedColor.CGColor;
+	self.fillColor = dimmedColor.CGColor;
 #else
 	[self removeAnimationForKey:kMorphAnimationKey];
 	if (degreeOfCipher == 1.0)
