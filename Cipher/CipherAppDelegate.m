@@ -51,8 +51,6 @@
 	experiment3.fontSize	= 164.0f;
 	
 	[tabBar addChildViewController:experiment3];
-
-	
     
 	
 	return YES;

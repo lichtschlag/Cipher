@@ -17,11 +17,17 @@
 @property (assign) CGRect frame;
 @property (assign) CGPoint position;
 
+// loaders
 + (NSArray *) strokesForString:(NSAttributedString *)inputString
 					  inBounds:(CGRect)containerBounds
 					   options:(int)perLinePerCharacterOrAsOne;
 
++ (CipherStroke *) strokeForSVGFileNamed:(NSString *)fileName;
+
+
+// transformations
 - (CipherStroke *) circularCipher;
+- (void) flipGeometry;
 
 
 @end

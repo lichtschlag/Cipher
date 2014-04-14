@@ -9,6 +9,9 @@
 #import "CipherStroke.h"
 #import <CoreText/CoreText.h>
 
+#import "SVGKit.h"
+
+
 // ===============================================================================================================
 @implementation CipherStroke
 // ===============================================================================================================
@@ -85,7 +88,8 @@
 				// create model
 				CipherStroke *glyphModel = [[CipherStroke alloc] init];
 				glyphModel.path = [clearTextPath bezierPathByConvertingToCurves];
-				glyphModel.frame = CGPathGetBoundingBox(lettersOutlinePath);
+				// TODO remove crash by checking if the path contains more than one move to
+				glyphModel.frame = CGPathGetBoundingBox(lettersOutlinePath);			// somethimes this cases a bad access, beacause path has only a move to command?
 				
 				CGPoint position = glyphModel.frame.origin;
 				position.x = position.x + glyphPosition.x;
@@ -114,6 +118,31 @@
 	return [NSArray arrayWithArray:result];
 }
 
+
+// quarantaine all of svg loading code here
++ (CipherStroke *) strokeForSVGFileNamed:(NSString *)fileName
+{
+	SVGKImage *testDocument		= [SVGKImage imageNamed:[fileName stringByAppendingPathExtension:@"svg"]];
+	NodeList *allPathElements		= [testDocument.DOMTree getElementsByTagName:@"path"];
+
+	// merge all paths in the file into one
+	CGMutablePathRef constructedPath = CGPathCreateMutable();
+	for (int i = 0; i < allPathElements.length; i++)
+	{
+		SVGPathElement *anElement	= (SVGPathElement *)[allPathElements item:i];
+		CGPathRef  aPath			= [anElement pathForShapeInRelativeCoords];
+		CGPathAddPath(constructedPath, NULL, aPath);
+	}
+	UIBezierPath *completePath			= [UIBezierPath bezierPathWithCGPath:constructedPath];
+
+	// consider setting sensible defaults for the other properties
+	CipherStroke *result = [[CipherStroke alloc] init];
+	result.path = [completePath bezierPathByConvertingToCurves];
+	result.frame = [completePath bounds];
+	result.position = CGPointMake(0, 0);
+	
+	return result;
+}
 
 // ---------------------------------------------------------------------------------------------------------------
 #pragma mark -
@@ -190,6 +219,55 @@
 	resultStroke.frame = self.frame;
 	
 	return resultStroke;
+}
+
+
+- (void) flipGeometry
+{
+	CGRect originalFrame = self.frame;
+	CGFloat height = originalFrame.size.height;
+//	CGPoint originalPosition = self.position;
+	CGMutablePathRef newPath = CGPathCreateMutable();
+	
+	[self.path enumeratePathElementsUsingBlock:^(const CGPathElement *element)
+	{
+		CGPathElementType currentPointType = element->type;
+		
+		CGPoint endPoint, c1, c2;
+		switch (currentPointType)
+		{
+			case kCGPathElementAddCurveToPoint:
+				c1			= element->points[0];
+				c2			= element->points[1];
+				endPoint	= element->points[2];
+				c1.y		= height - c1.y;
+				c2.y		= height - c2.y;
+				endPoint.y	= height - endPoint.y;
+				CGPathAddCurveToPoint(newPath, NULL, c1.x, c1.y, c2.x, c2.y, endPoint.x, endPoint.y);
+				break;
+			case kCGPathElementAddQuadCurveToPoint:
+				c1			= element->points[0];
+				endPoint	= element->points[1];
+				c1.y		= height - c1.y;
+				endPoint.y	= height - endPoint.y;
+				CGPathAddQuadCurveToPoint(newPath, NULL, c1.x, c1.y, endPoint.x, endPoint.y);
+				break;
+			case kCGPathElementMoveToPoint:
+				endPoint	= element->points[0];
+				endPoint.y	= height - endPoint.y;
+				CGPathMoveToPoint(newPath, NULL, endPoint.x, endPoint.y);
+				break;
+			case kCGPathElementAddLineToPoint:
+				endPoint	= element->points[0];
+				endPoint.y	= height - endPoint.y;
+				CGPathAddLineToPoint(newPath, NULL, endPoint.x, endPoint.y);
+			case kCGPathElementCloseSubpath:
+				CGPathCloseSubpath(newPath);
+			default:
+				break;
+		}
+	}];
+	self.path = [UIBezierPath bezierPathWithCGPath:newPath];
 }
 
 

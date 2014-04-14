@@ -96,6 +96,16 @@ static const CGFloat kMaxRevealDistance	=  100;
 												  inBounds:self.textContainer.bounds
 												   options:0];
 
+	CipherStroke *loadingTest  = [CipherStroke strokeForSVGFileNamed:@"portrait"];
+	UIBezierPath *loadingPath = loadingTest.path;
+	[loadingTest flipGeometry];
+	loadingPath = loadingTest.path;
+	
+	CipherStroke *cipher = [loadingTest circularCipher];
+	UIBezierPath *cipherPath = [cipher path];
+	
+	glyphStrokes = [glyphStrokes arrayByAddingObject:loadingTest];
+	
 	for (CipherStroke *aStroke in glyphStrokes)
 	{
 		// create layer from our model
@@ -113,7 +123,7 @@ static const CGFloat kMaxRevealDistance	=  100;
 //		aLayer.clearColor = nil;
 //		aLayer.fillColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
 //		aLayer.fillColor = nil;
-		aLayer.lineWidth = 2.0f;
+		aLayer.lineWidth = 0.0f;
 		
 		// line cap square would be preferable, but invisible line fragments can produce noise
 		aLayer.lineCap = kCALineCapButt;
@@ -123,9 +133,42 @@ static const CGFloat kMaxRevealDistance	=  100;
 //		aLayer.lineJoin  = kCALineJoinBevel;
 		
 		[aLayer prep];
-		
+				
 		[self.textContainer addSublayer:aLayer];
 	}
+	
+	
+//	
+//	
+//	
+//	CipherLayer *aLayer = [[CipherLayer alloc] init];
+//	aLayer.clearTextPath = loadingTest.path;
+//	aLayer.cipherTextPath = [loadingTest circularCipher].path;
+//	aLayer.anchorPoint = CGPointMake(0,0);
+//	aLayer.frame = loadingTest.frame;
+//	aLayer.bounds = loadingTest.frame;
+//	aLayer.position = loadingTest.position;
+//	
+//	aLayer.clearColor = [UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000];
+//	//		aLayer.clearColor = nil;
+//	//		aLayer.fillColor = [[UIColor colorWithRed:1.000 green:0.502 blue:0.000 alpha:1.000] CGColor];
+//	//		aLayer.fillColor = nil;
+//	aLayer.lineWidth = 2.0f;
+//	
+//	// line cap square would be preferable, but invisible line fragments can produce noise
+//	aLayer.lineCap = kCALineCapButt;
+//	
+//	// a lower value redices artifacts during morphs, e.g. Helvetica 'a'
+//	aLayer.miterLimit = 5.0f;
+//	//		aLayer.lineJoin  = kCALineJoinBevel;
+//	
+//	[aLayer prep];
+//	
+//	[self.view.layer addSublayer:aLayer];
+//
+
+	
+	
 }
 
 
