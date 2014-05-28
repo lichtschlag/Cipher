@@ -16,6 +16,7 @@
 @property (strong) UIBezierPath *path;
 @property (assign) CGRect frame;
 @property (assign) CGPoint position;
+@property (assign) NSUInteger hint;
 
 // loaders
 + (NSArray *) strokesForString:(NSAttributedString *)inputString

@@ -49,9 +49,6 @@
 	self.cipherTextPath = [UIBezierPath bezierPathByConvertingPathToCurves:self.cipherTextPath];
 	self.clearTextPath = [UIBezierPath bezierPathByConvertingPathToCurves:self.clearTextPath];
 	self.currentTextPath = self.cipherTextPath;
-	
-	// TODO: test this:
-	self.drawsAsynchronously = NO;
 }
 
 

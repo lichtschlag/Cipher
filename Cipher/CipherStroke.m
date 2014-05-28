@@ -22,6 +22,7 @@
 + (NSArray *) strokesForString:(NSAttributedString *)inputString
 					  inBounds:(CGRect)containerBounds
 					   options:(int)perLinePerCharacterOrAsOne
+//						ranges:(NSArray *)ranges
 {
 	NSMutableArray *result = [NSMutableArray array];
 	
@@ -59,13 +60,19 @@
 			CTRunRef aRun = (CTRunRef)CFArrayGetValueAtIndex(runArray, runIndex);
 			CTFontRef runFont = CFDictionaryGetValue(CTRunGetAttributes(aRun), kCTFontAttributeName);
 			
+			NSDictionary *dict = (NSDictionary *)CTRunGetAttributes(aRun);
+			NSUInteger hint = NSNotFound;
+			NSNumber *number = dict[@"hint"];
+			if (number)
+				hint = [number integerValue];
+			
 			// for each GLYPH in run
 			for (CFIndex runGlyphIndex = 0; runGlyphIndex < CTRunGetGlyphCount(aRun); runGlyphIndex++)
 			{
 				// DO SOMETHING WITH THE GLYPH
 				
 				// Create path from text
-				CGMutablePathRef lettersOutlinePath = CGPathCreateMutable();
+//				CGMutablePathRef lettersOutlinePath = CGPathCreateMutable();
 				
 				// get GLYPH & Glyph-data
 				CFRange thisGlyphRange = CFRangeMake(runGlyphIndex, 1);
@@ -76,30 +83,35 @@
 				
 				// Get normal PATH of the letter
 				CGPathRef letterOutlinePath = CTFontCreatePathForGlyph(runFont, glyph, NULL);
-				CGPathAddPath(lettersOutlinePath, NULL, letterOutlinePath);
-				CGPathRelease(letterOutlinePath);
+//				CGPathAddPath(lettersOutlinePath, NULL, letterOutlinePath);
 				
 				// convert to BEZIERPATH
-				UIBezierPath *clearTextPath = [UIBezierPath bezierPath];
-				[clearTextPath moveToPoint:CGPointZero];
-				[clearTextPath appendPath:[UIBezierPath bezierPathWithCGPath:lettersOutlinePath]];
-				CGPathRelease(lettersOutlinePath);
+//				UIBezierPath *clearTextPath = [UIBezierPath bezierPath];
+//				[clearTextPath moveToPoint:CGPointZero];
+//				[clearTextPath appendPath:[UIBezierPath bezierPathWithCGPath:lettersOutlinePath]];
+				UIBezierPath *clearTextPath = [UIBezierPath bezierPathWithCGPath:letterOutlinePath];
 				
 				// create model
-				if (!CGPathIsEmpty(lettersOutlinePath))
+				// TODO: remove crash by checking if the path contains more than one moveTo
+				if (!CGPathIsEmpty(letterOutlinePath) && letterOutlinePath)// && lettersOutlinePath)
 				{
 					CipherStroke *glyphModel = [[CipherStroke alloc] init];
 					glyphModel.path = [clearTextPath bezierPathByConvertingToCurves];
-					// TODO remove crash by checking if the path contains more than one move to
-					glyphModel.frame = CGPathGetBoundingBox(lettersOutlinePath);			// sometimes this cases a bad access, beacause path has only a move to command?
+//					UIBezierPath *debugPath = [UIBezierPath bezierPathWithCGPath:lettersOutlinePath];
+					glyphModel.frame = CGPathGetBoundingBox(letterOutlinePath);			// sometimes this causes a bad access, because path has only a move to command?
 					
 					CGPoint position = glyphModel.frame.origin;
 					position.x = position.x + glyphPosition.x;
 					position.y = position.y + glyphPosition.y + lineY;
 					glyphModel.position = position;
+					glyphModel.hint = hint;
+					
 									
 					[result addObject:glyphModel];
 				}
+				CGPathRelease(letterOutlinePath);
+
+//				CGPathRelease(lettersOutlinePath);
 			}
 		}
 		
@@ -143,6 +155,7 @@
 	result.path = [completePath bezierPathByConvertingToCurves];
 	result.frame = [completePath bounds];
 	result.position = CGPointMake(0, 0);
+	result.hint = NSNotFound;
 	
 	return result;
 }
