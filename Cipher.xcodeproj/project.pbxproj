@@ -27,13 +27,22 @@
 		3F310BEE175AB75B0093AF99 /* CipherLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BED175AB75B0093AF99 /* CipherLayer.m */; };
 		3F310BF2175E47E30093AF99 /* UIBezierPath+PathMorphing.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */; };
 		3F41C66818BE473B0019CB08 /* CipherLayerQuartz.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F41C66718BE473B0019CB08 /* CipherLayerQuartz.m */; };
-		3F41C66C18BE5DFE0019CB08 /* CipherLayerGL.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F41C66A18BE5DAF0019CB08 /* CipherLayerGL.m */; };
 		3FA2FCBF18AE67D600209EDC /* CipherDebugLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FA2FCBE18AE67D600209EDC /* CipherDebugLayer.m */; };
 		3FD8E41118F99FBD00B65DBD /* CipherStroke.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD8E41018F99FBD00B65DBD /* CipherStroke.m */; };
 		3FD8E41518FA039F00B65DBD /* UIColor+ColorModifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FD8E41418FA039F00B65DBD /* UIColor+ColorModifications.m */; };
 		3FD8E49F18FB4C7100B65DBD /* libSVGKit-iOS.1.2.0pre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD8E41E18FB4C7000B65DBD /* libSVGKit-iOS.1.2.0pre.a */; };
 		3FD8E4A118FB4E2000B65DBD /* portrait.svg in Resources */ = {isa = PBXBuildFile; fileRef = 3FD8E4A018FB4E2000B65DBD /* portrait.svg */; };
 		3FD8E4A318FB4ED200B65DBD /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FD8E4A218FB4ED200B65DBD /* libxml2.dylib */; };
+		3FDC3EF218FC0C43006A4EFC /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC3EE818FC0C43006A4EFC /* Icon-76.png */; };
+		3FDC3EF318FC0C43006A4EFC /* Icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC3EE918FC0C43006A4EFC /* Icon-76@2x.png */; };
+		3FDC3EF418FC0C43006A4EFC /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC3EEA18FC0C43006A4EFC /* Icon-Small-50.png */; };
+		3FDC3EF518FC0C43006A4EFC /* Icon-Small-50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC3EEB18FC0C43006A4EFC /* Icon-Small-50@2x.png */; };
+		3FDC3EF618FC0C43006A4EFC /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC3EEC18FC0C43006A4EFC /* Icon-Small.png */; };
+		3FDC3EF718FC0C43006A4EFC /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC3EED18FC0C43006A4EFC /* Icon-Small@2x.png */; };
+		3FDC3EF818FC0C43006A4EFC /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC3EEE18FC0C43006A4EFC /* Icon.png */; };
+		3FDC3EF918FC0C43006A4EFC /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC3EEF18FC0C43006A4EFC /* Icon@2x.png */; };
+		3FDC3EFA18FC0C43006A4EFC /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC3EF018FC0C43006A4EFC /* iTunesArtwork.png */; };
+		3FDC3EFB18FC0C43006A4EFC /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FDC3EF118FC0C43006A4EFC /* iTunesArtwork@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,8 +75,6 @@
 		3F310BF1175E47E30093AF99 /* UIBezierPath+PathMorphing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+PathMorphing.m"; sourceTree = "<group>"; };
 		3F41C66618BE473B0019CB08 /* CipherLayerQuartz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherLayerQuartz.h; sourceTree = "<group>"; };
 		3F41C66718BE473B0019CB08 /* CipherLayerQuartz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherLayerQuartz.m; sourceTree = "<group>"; };
-		3F41C66918BE5DAF0019CB08 /* CipherLayerGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherLayerGL.h; sourceTree = "<group>"; };
-		3F41C66A18BE5DAF0019CB08 /* CipherLayerGL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherLayerGL.m; sourceTree = "<group>"; };
 		3FA2FCBD18AE67D600209EDC /* CipherDebugLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherDebugLayer.h; sourceTree = "<group>"; };
 		3FA2FCBE18AE67D600209EDC /* CipherDebugLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CipherDebugLayer.m; sourceTree = "<group>"; };
 		3FD8E40F18F99FBD00B65DBD /* CipherStroke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CipherStroke.h; sourceTree = "<group>"; };
@@ -202,6 +209,16 @@
 		3FD8E49E18FB4C7100B65DBD /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
 		3FD8E4A018FB4E2000B65DBD /* portrait.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = portrait.svg; sourceTree = "<group>"; };
 		3FD8E4A218FB4ED200B65DBD /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		3FDC3EE818FC0C43006A4EFC /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
+		3FDC3EE918FC0C43006A4EFC /* Icon-76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76@2x.png"; sourceTree = "<group>"; };
+		3FDC3EEA18FC0C43006A4EFC /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
+		3FDC3EEB18FC0C43006A4EFC /* Icon-Small-50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50@2x.png"; sourceTree = "<group>"; };
+		3FDC3EEC18FC0C43006A4EFC /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
+		3FDC3EED18FC0C43006A4EFC /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
+		3FDC3EEE18FC0C43006A4EFC /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		3FDC3EEF18FC0C43006A4EFC /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		3FDC3EF018FC0C43006A4EFC /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
+		3FDC3EF118FC0C43006A4EFC /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -273,6 +290,7 @@
 		3F310BBE175A9E480093AF99 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3FDC3EE718FC0C43006A4EFC /* App Icon */,
 				3FD8E4A018FB4E2000B65DBD /* portrait.svg */,
 				3F310BD5175A9E480093AF99 /* first.png */,
 				3F310BD7175A9E480093AF99 /* first@2x.png */,
@@ -295,8 +313,6 @@
 				3F310BED175AB75B0093AF99 /* CipherLayer.m */,
 				3F41C66618BE473B0019CB08 /* CipherLayerQuartz.h */,
 				3F41C66718BE473B0019CB08 /* CipherLayerQuartz.m */,
-				3F41C66918BE5DAF0019CB08 /* CipherLayerGL.h */,
-				3F41C66A18BE5DAF0019CB08 /* CipherLayerGL.m */,
 			);
 			name = "Main View";
 			path = Cipher;
@@ -494,6 +510,23 @@
 			path = include;
 			sourceTree = "<group>";
 		};
+		3FDC3EE718FC0C43006A4EFC /* App Icon */ = {
+			isa = PBXGroup;
+			children = (
+				3FDC3EE818FC0C43006A4EFC /* Icon-76.png */,
+				3FDC3EE918FC0C43006A4EFC /* Icon-76@2x.png */,
+				3FDC3EEA18FC0C43006A4EFC /* Icon-Small-50.png */,
+				3FDC3EEB18FC0C43006A4EFC /* Icon-Small-50@2x.png */,
+				3FDC3EEC18FC0C43006A4EFC /* Icon-Small.png */,
+				3FDC3EED18FC0C43006A4EFC /* Icon-Small@2x.png */,
+				3FDC3EEE18FC0C43006A4EFC /* Icon.png */,
+				3FDC3EEF18FC0C43006A4EFC /* Icon@2x.png */,
+				3FDC3EF018FC0C43006A4EFC /* iTunesArtwork.png */,
+				3FDC3EF118FC0C43006A4EFC /* iTunesArtwork@2x.png */,
+			);
+			path = "App Icon";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -546,16 +579,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FDC3EF818FC0C43006A4EFC /* Icon.png in Resources */,
+				3FDC3EF618FC0C43006A4EFC /* Icon-Small.png in Resources */,
 				3F310BC2175A9E480093AF99 /* InfoPlist.strings in Resources */,
+				3FDC3EF418FC0C43006A4EFC /* Icon-Small-50.png in Resources */,
 				3F310BCA175A9E480093AF99 /* Default.png in Resources */,
+				3FDC3EF718FC0C43006A4EFC /* Icon-Small@2x.png in Resources */,
 				3F310BCC175A9E480093AF99 /* Default@2x.png in Resources */,
+				3FDC3EF318FC0C43006A4EFC /* Icon-76@2x.png in Resources */,
 				3F310BCE175A9E480093AF99 /* Default-568h@2x.png in Resources */,
 				3F310BD1175A9E480093AF99 /* iPad.storyboard in Resources */,
+				3FDC3EF218FC0C43006A4EFC /* Icon-76.png in Resources */,
 				3F310BD6175A9E480093AF99 /* first.png in Resources */,
 				3F310BD8175A9E480093AF99 /* first@2x.png in Resources */,
 				3F310BDD175A9E480093AF99 /* second.png in Resources */,
 				3F310BDF175A9E480093AF99 /* second@2x.png in Resources */,
+				3FDC3EF918FC0C43006A4EFC /* Icon@2x.png in Resources */,
+				3FDC3EFB18FC0C43006A4EFC /* iTunesArtwork@2x.png in Resources */,
+				3FDC3EF518FC0C43006A4EFC /* Icon-Small-50@2x.png in Resources */,
 				3FD8E4A118FB4E2000B65DBD /* portrait.svg in Resources */,
+				3FDC3EFA18FC0C43006A4EFC /* iTunesArtwork.png in Resources */,
 				3F310BE7175A9FEA0093AF99 /* iPhone.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -569,7 +612,6 @@
 			files = (
 				3F310BC4175A9E480093AF99 /* main.m in Sources */,
 				3F310BC8175A9E480093AF99 /* CipherAppDelegate.m in Sources */,
-				3F41C66C18BE5DFE0019CB08 /* CipherLayerGL.m in Sources */,
 				3FA2FCBF18AE67D600209EDC /* CipherDebugLayer.m in Sources */,
 				3FD8E41118F99FBD00B65DBD /* CipherStroke.m in Sources */,
 				3F310BD4175A9E480093AF99 /* CipherViewController.m in Sources */,

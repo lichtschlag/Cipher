@@ -86,17 +86,20 @@
 				CGPathRelease(lettersOutlinePath);
 				
 				// create model
-				CipherStroke *glyphModel = [[CipherStroke alloc] init];
-				glyphModel.path = [clearTextPath bezierPathByConvertingToCurves];
-				// TODO remove crash by checking if the path contains more than one move to
-				glyphModel.frame = CGPathGetBoundingBox(lettersOutlinePath);			// somethimes this cases a bad access, beacause path has only a move to command?
-				
-				CGPoint position = glyphModel.frame.origin;
-				position.x = position.x + glyphPosition.x;
-				position.y = position.y + glyphPosition.y + lineY;
-				glyphModel.position = position;
-								
-				[result addObject:glyphModel];
+				if (!CGPathIsEmpty(lettersOutlinePath))
+				{
+					CipherStroke *glyphModel = [[CipherStroke alloc] init];
+					glyphModel.path = [clearTextPath bezierPathByConvertingToCurves];
+					// TODO remove crash by checking if the path contains more than one move to
+					glyphModel.frame = CGPathGetBoundingBox(lettersOutlinePath);			// sometimes this cases a bad access, beacause path has only a move to command?
+					
+					CGPoint position = glyphModel.frame.origin;
+					position.x = position.x + glyphPosition.x;
+					position.y = position.y + glyphPosition.y + lineY;
+					glyphModel.position = position;
+									
+					[result addObject:glyphModel];
+				}
 			}
 		}
 		
