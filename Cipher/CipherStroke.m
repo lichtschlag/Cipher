@@ -160,6 +160,34 @@
 	return result;
 }
 
+
++ (CipherStroke *) strokeForSVGFileNamed:(NSString *)fileName idName:(NSString *)idName
+{
+	SVGKImage *testDocument			= [SVGKImage imageNamed:[fileName stringByAppendingPathExtension:@"svg"]];
+	Element *group = [testDocument.DOMTree getElementById:idName];
+	NodeList *allPathElements		= [group getElementsByTagName:@"path"];
+	
+	// merge all paths in the file into one
+	CGMutablePathRef constructedPath = CGPathCreateMutable();
+	for (int i = 0; i < allPathElements.length; i++)
+	{
+		SVGPathElement *anElement	= (SVGPathElement *)[allPathElements item:i];
+		CGPathRef  aPath			= [anElement pathForShapeInRelativeCoords];
+		CGPathAddPath(constructedPath, NULL, aPath);
+	}
+	UIBezierPath *completePath			= [UIBezierPath bezierPathWithCGPath:constructedPath];
+	
+	// consider setting sensible defaults for the other properties
+	CipherStroke *result = [[CipherStroke alloc] init];
+	result.path = [completePath bezierPathByConvertingToCurves];
+	result.frame = [completePath bounds];
+	result.position = CGPointMake(0, 0);
+	result.hint = NSNotFound;
+	
+	return result;
+}
+
+
 // ---------------------------------------------------------------------------------------------------------------
 #pragma mark -
 #pragma mark Conversion

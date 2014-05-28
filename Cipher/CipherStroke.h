@@ -24,7 +24,7 @@
 					   options:(int)perLinePerCharacterOrAsOne;
 
 + (CipherStroke *) strokeForSVGFileNamed:(NSString *)fileName;
-
++ (CipherStroke *) strokeForSVGFileNamed:(NSString *)fileName idName:(NSString *)idName;
 
 // transformations
 - (CipherStroke *) circularCipher;
